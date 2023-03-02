@@ -1,8 +1,8 @@
 package edu.kh.stock_market.data;
 
-public class Data {
+public class Event {
 
-	public Data() {
+	public Event() {
 		// TODO Auto-generated constructor stub
 	}
 

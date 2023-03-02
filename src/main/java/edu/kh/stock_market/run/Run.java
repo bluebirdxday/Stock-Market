@@ -1,9 +1,12 @@
 package edu.kh.stock_market.run;
 
-public class Run {
+import edu.kh.stock_market.view.View;
 
-	public Run() {
-		// TODO Auto-generated constructor stub
+public class Run {
+	public static void main(String[] args) {
+		
+		View view = new View();
+		view.displayMenu();
 	}
 
 }
