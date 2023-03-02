@@ -45,6 +45,24 @@ public class View {
 	// 사용자 등록
 	private void registerUserInfo() {
 		
+		System.out.println("[사용자 등록하기]");
+		System.out.print("등록할 인원 수 : ");
+		int userNumber = sc.nextInt();
+		sc.next();
+		
+		List<String> list = new ArrayList<String>();
+		
+		System.out.println();
+		
+		System.out.println("[닉네임을 입력해주세요.]");
+		for(int i=1; i<=userNumber; i++) {
+			System.out.printf("USER %d : \n", userNumber);
+			list.add(i, sc.next());
+		}
+		System.out.println(List.join("님,",list) + " 등록이 완료되었습니다.");
+		
+		
+		
 		
 	}
 
