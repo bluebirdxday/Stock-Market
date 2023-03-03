@@ -7,17 +7,17 @@ import edu.kh.stock_market.dto.Stock;
 public class Event {
 
 	private String eventDescription;	// 이벤트 설명
-	private List<Stock> stocks; // 종목
+	private List<List<Stock>> stocks; // 종목
 	private double rate;  // 변동률
 	
-	
+
 	public Event() {
 		
 	}
 	
 	
 	
-	public Event(String eventDescription, List<Stock> stocks, double rate) {
+	public Event(String eventDescription, List<List<Stock>> stocks, double rate) {
 
 		this.eventDescription = eventDescription;
 		this.stocks = stocks;
@@ -29,26 +29,39 @@ public class Event {
 	public String getEventDescription() {
 		return eventDescription;
 	}
-	
+
+
+
 	public void setEventDescription(String eventDescription) {
 		this.eventDescription = eventDescription;
 	}
-	
-	public List<Stock> getStocks() {
+
+
+
+	public List<List<Stock>> getStocks() {
 		return stocks;
 	}
-	
-	public void setStocks(List<Stock> stocks) {
+
+
+
+	public void setStocks(List<List<Stock>> stocks) {
 		this.stocks = stocks;
 	}
-	
+
+
+
 	public double getRate() {
 		return rate;
 	}
-	
+
+
+
 	public void setRate(double rate) {
 		this.rate = rate;
 	}
+
+
+
 	
 	
 	

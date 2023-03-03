@@ -5,7 +5,7 @@ import java.util.List;
 
 public class User {
 	
-	final int START_CASH = 100_000;	//시작시 현금량
+	final int START_CASH = 100_000;	//시작시 현금
 		
 	private String userName;	  // 유저 이름
 	private int cashHoldings;	  // 보유 현금
