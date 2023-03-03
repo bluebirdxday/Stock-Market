@@ -1,18 +1,19 @@
 package edu.kh.stock_market.service;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import edu.kh.stock_market.dto.User;
 
 public class Service {
 
-	private List<User> userList;
+	private Set<User> userSet = null;
 	
 	
 	public Service() {
 		
-		userList = new ArrayList<>();
+		userSet = new HashSet<>();
 	}
 	
 	
@@ -21,12 +22,12 @@ public class Service {
 	 * @param userName 사용자 닉네임
 	 * @return userList 사용자 리스트
 	 */
-	public List<User> registerUserService(String userName) {
+	public Set<User> registerUserService(String userName) {
 		
 		User user = new User(userName);
-		userList.add(user);
+		userSet.add(user);
 		
-		return userList;
+		return userSet;
 		
 	}
 	

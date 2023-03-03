@@ -1,8 +1,10 @@
 package edu.kh.stock_market.view;
 
+import java.time.LocalDate;
 import java.util.InputMismatchException;
-import java.util.List;
+import java.util.Iterator;
 import java.util.Scanner;
+import java.util.Set;
 
 import edu.kh.stock_market.dto.User;
 import edu.kh.stock_market.service.Service;
@@ -12,7 +14,13 @@ public class View {
 	
 	private Service service = new Service();
 	private Scanner scan = new Scanner(System.in);
-	List<User> userList = null;
+	Set<User> userSet = null;  // 회원 리스트
+	
+	LocalDate now = LocalDate.now();  // 현재 날짜 구하기
+	int year = now.getYear();
+	int month = now.getMonthValue();
+	int day = now.getDayOfYear();
+	
 
 	
 	/** 시작 화면
@@ -61,7 +69,7 @@ public class View {
 		}while(menuChoice!=0);
 		
 		
-		
+		informationAuction();
 		
 	}
 	
@@ -125,24 +133,60 @@ public class View {
 		
 		
 		for(int i=1; i<userCount+1; i++) {
-			System.out.printf("USER %d : ", i);
-			userList = service.registerUserService(scan.nextLine());
+			System.out.printf("USER %d ▶ ", i);
+			userSet = service.registerUserService(scan.nextLine());
 		}
 		
 		
-		for(int i=0; i<userList.size()-1; i++) {
-			System.out.print(userList.get(i).getUserName() + "님, ");
-		}
+		Iterator<User> iterator = userSet.iterator();
 		
-		System.out.println(userList.get(userCount-1).getUserName() + "님 등록이 완료되었습니다.");
+		int count=1;
+		
+		while(iterator.hasNext()) {
+			User user = iterator.next();
+			
+			if(count<userSet.size()) {
+				System.out.print(user.getUserName() + "님, ");				
+			}else {
+				System.out.println(user.getUserName() + "님 등록이 완료되었습니다.");
+			}
+			
+			count++;
+			
+		}
 
 	}
 	
 	
 	public void informationAuction() {
 		
+		int bidPrice = 1000; // 입찰가
+		int[] bidPriceList = new int[userSet.size()];
 		
 		System.out.println();
+		System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
+		System.out.printf("%d-%d-%d\n", year, month, day);
+		System.out.println("[정보 경매를 시작합니다]");
+		
+		System.out.println();
+		
+		System.out.println("원하는 금액을 제시해주세요. (최대 금액 : 50,000원) ");
+		System.out.println("패스하시려면 (P)를 입력해주세요.");
+		System.out.println("----------------------------------------------------");
+		
+		System.out.println();
+		System.out.println("현재 입찰가 : " + bidPrice + "원");
+		
+		
+		for(int i=0; i<2; i++) {
+			
+			
+		}
+		System.out.println();
+		System.out.println();
+		
+		
+		
 		
 	}
 	
