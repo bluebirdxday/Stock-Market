@@ -5,11 +5,11 @@ public class Stock {
 	final int STOCK_QUANTITIY = 10;  // 초기 주식 수 
 	
 	private int stockPrice;	// 주가
-	private int stockName;	// 종목명
+	private String stockName;	// 종목명
 	private int stockLeft;  // 남은 주식 수 
 	private int stockChangeRate; // 변동률
 	
-	public Stock(int stockPrice, int stockName) {
+	public Stock(int stockPrice, String stockName) {
 		
 		this.stockPrice = stockPrice;
 		this.stockName = stockName;
@@ -24,11 +24,11 @@ public class Stock {
 		this.stockPrice = stockPrice;
 	}
 	
-	public int getStockName() {
+	public String getStockName() {
 		return stockName;
 	}
 	
-	public void setStockName(int stockName) {
+	public void setStockName(String stockName) {
 		this.stockName = stockName;
 	}
 	

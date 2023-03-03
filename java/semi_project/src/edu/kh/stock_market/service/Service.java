@@ -31,6 +31,16 @@ public class Service {
 		
 	}
 	
+
+	
+	/** 정보 입찰 경매
+	 * 입찰가 비교해서 최고 금액 낙찰
+	 */
+	public void auctionService() {
+		
+		
+	}
+	
 	
 	
 	

@@ -1,8 +1,10 @@
 package edu.kh.stock_market.view;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -20,6 +22,8 @@ public class View {
 	int year = now.getYear();
 	int month = now.getMonthValue();
 	int day = now.getDayOfYear();
+	
+	Iterator<User> iterator = userSet.iterator();  // 회원 리스트 순회를 위한 iterator
 	
 
 	
@@ -118,7 +122,8 @@ public class View {
 	public void registerUserInfo() {
 		
 		
-		int userCount=0;
+		int userCount=0;  // 등록 인원
+		int count=1;  // iterator 순회 countcheck
 		
 		System.out.println();
 		System.out.println("[사용자 등록하기]");
@@ -138,9 +143,7 @@ public class View {
 		}
 		
 		
-		Iterator<User> iterator = userSet.iterator();
-		
-		int count=1;
+
 		
 		while(iterator.hasNext()) {
 			User user = iterator.next();
@@ -160,30 +163,61 @@ public class View {
 	
 	public void informationAuction() {
 		
+		final int MAX_BIDPRICE = 50000;  // 최대 금액
 		int bidPrice = 1000; // 입찰가
-		int[] bidPriceList = new int[userSet.size()];
+		int quotePrice;  // 회원 제시가
+		String finalBidder; // 낙찰자
+		 
+		Map<User, Integer> bidPriceMap = new HashMap<>(); // 입찰가 Map(key : userName, value : bidPrice)
 		
 		System.out.println();
 		System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
 		System.out.printf("%d-%d-%d\n", year, month, day);
 		System.out.println("[정보 경매를 시작합니다]");
+		System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
 		
 		System.out.println();
 		
 		System.out.println("원하는 금액을 제시해주세요. (최대 금액 : 50,000원) ");
 		System.out.println("패스하시려면 (P)를 입력해주세요.");
-		System.out.println("----------------------------------------------------");
 		
 		System.out.println();
 		System.out.println("현재 입찰가 : " + bidPrice + "원");
-		
+		System.out.println();
 		
 		for(int i=0; i<2; i++) {
 			
+			while(iterator.hasNext()) {
+				
+				User user = iterator.next();
+				System.out.print(user.getUserName() + " ▶ ");
+				
+				quotePrice = scan.nextInt();
+			
+				
+				if(quotePrice<bidPrice)  // 회원 제시가 < 초기 입찰가
+					
+					System.out.println("[X] 더 높은 금액을 제시해주세요 [X]");
+				
+				else if(quotePrice>MAX_BIDPRICE) {  // 회원 제시가 > 최대 금액
+					
+					System.out.println("[X] 입찰 가능한 금액을 초과합니다 [X]");
+					
+				}else if(quotePrice==MAX_BIDPRICE){
+					
+					System.out.println("낙찰 되었습니다!");
+					
+					finalBidder = user.getUserName();
+					break;
+					
+				}else {
+					
+					bidPriceMap.put(user, quotePrice);  // 입찰가 Map에 저장
+				}
+			}
 			
 		}
-		System.out.println();
-		System.out.println();
+		
 		
 		
 		
