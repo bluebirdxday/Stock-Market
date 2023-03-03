@@ -1,20 +1,24 @@
 package edu.kh.stock_market.service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import edu.kh.stock_market.dto.User;
 
 public class Service {
 
-	private List<User> userList = new ArrayList<User>();
-
+	private Set<User> userSet = null();
 	
-	/** userList에 사용자 추가
-	 * @param user
-	 * @return
-	 */
-	public boolean addUser(User user) {
-		return userList.add(user);
+	public Service() {
+		userSet = new HashSet<>();
 	}
+	
+	public Set<User> registerUserService(String userName){
+		User user = new User(userName);
+		userSet.add(user);
+		
+		return userSet;
+	}
+
+
 }

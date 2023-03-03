@@ -1,9 +1,12 @@
 package edu.kh.stock_market.data;
 
+import java.util.List;
+
+import edu.kh.stock_market.dto.Stock;
+
 public class Event {
 
-	public Event() {
-		// TODO Auto-generated constructor stub
-	}
-
+	private String eventDescription;	// 이벤트 설명
+	private List<Stock> stocks; // 종목
+	private double rate;  // 변동률
 }

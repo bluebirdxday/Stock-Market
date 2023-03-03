@@ -18,6 +18,11 @@ public class User{
 	
 	
 	public User() {}
+	
+	public User(String userName) { // ???
+		super();
+		this.userName = userName;
+	}
 
 	public User(int day, int turn, String userName, int userNum, int cashHoldings, List<Stock> stocks, int property,
 			int bidPrice) {

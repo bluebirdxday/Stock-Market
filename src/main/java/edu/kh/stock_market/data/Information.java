@@ -1,9 +1,8 @@
 package edu.kh.stock_market.data;
 
+import java.util.ArrayList;
+
 public class Information {
 
-	public Information() {
-		// TODO Auto-generated constructor stub
-	}
-
+	private ArrayList<String> infoDescription;	// 정보 설명
 }
