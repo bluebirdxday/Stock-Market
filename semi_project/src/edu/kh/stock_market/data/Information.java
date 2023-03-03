@@ -7,3 +7,4 @@ public class Information {
 	private ArrayList<String> infoDescription;	// 정보 설명
 	
 }
+s
