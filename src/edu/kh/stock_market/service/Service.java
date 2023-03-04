@@ -3,15 +3,15 @@ package edu.kh.stock_market.service;
 import java.util.ArrayList;
 
 import edu.kh.stock_market.dto.Stock;
-
+import edu.kh.stock_market.dto.User;
 
 public class Service {
-	
-private ArrayList<Stock> stockList;
-	
+
+	private ArrayList<Stock> stockList;
+
 	public Service() {
 		stockList = new ArrayList<>();
-		
+
 		stockList.add(new Stock("삼성전자", 81000));
 		stockList.add(new Stock("SK하이닉스", 130000));
 		stockList.add(new Stock("LG화학", 830000));
@@ -25,9 +25,16 @@ private ArrayList<Stock> stockList;
 		stockList.add(new Stock("카카오", 116500));
 		stockList.add(new Stock("신한지주", 38750));
 	}
-	
+
 	// getter
 	public ArrayList<Stock> getStockList() {
 		return stockList;
 	}
-}
+
+	private ArrayList<User> users= new ArrayList<User>();
+	
+	
+	
+	
+		
+	}

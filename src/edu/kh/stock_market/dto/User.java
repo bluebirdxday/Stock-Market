@@ -3,10 +3,12 @@ package edu.kh.stock_market.dto;
 import java.util.List;
 
 public class User {
+	
+	
 
-	final int START_CASH = 100_000; // 시작시 현금량
+	public final int START_CASH = 100_000; // 시작시 현금량
 	final String SCREEN = "KH Stock Market";
-	final int STOCK_QUANTITIY = 10; // 초기 주식 수
+	public static final int STOCK_QUANTITIY = 10; // 초기 주식 수
 
 	private int day = 1; // 날짜
 	private int turn; // 턴
@@ -49,6 +51,7 @@ public class User {
 		this.property = property;
 		this.bidPrice = bidPrice;
 	}
+	
 
 	public int getDay() {
 		return day;

@@ -3,11 +3,20 @@ package edu.kh.stock_market.dto;
 public class Stock {
 	
 	
-	private int stockPrice;		//주가
+	private int stockPrice;		//현재주가
+	private int stockYesPrice;   //전날주가
+	public int getStockYesPrice() {
+		return stockYesPrice;
+	}
+
+	public void setStockYesPrice(int stockYesPrice) {
+		this.stockYesPrice = stockYesPrice;
+	}
+
 	private String stockName;
-	private int stockHoldings;  //남은 주식 수 
-	private int stockInc;	//상승률
-	private int stockDec;	//하락률
+	
+	private int stockRemain;  //남은 주식 수 
+	private double stockIncDec;	//등락률
 
 	public Stock() {}
 
@@ -19,40 +28,37 @@ public class Stock {
 		this.stockPrice = stockPrice;
 	}
 
-	public int getStockHoldings() {
-		return stockHoldings;
+	public int getStockRemain() {
+		return stockRemain;
 	}
 
-	public void setStockHoldings(int stockHoldings) {
-		this.stockHoldings = stockHoldings;
+	public void setStockRemain(int stockRemain) {
+		this.stockRemain = stockRemain;
 	}
 
-	public int getStockInc() {
-		return stockInc;
+	public double getStockIncDec() {
+		return stockIncDec;
 	}
 
-	public void setStockInc(int stockInc) {
-		this.stockInc = stockInc;
+	public void setStockIncDec(double stockIncDec) {
+		this.stockIncDec = stockIncDec;
 	}
 
-	public int getStockDec() {
-		return stockDec;
-	}
 
-	public void setStockDec(int stockDec) {
-		this.stockDec = stockDec;
-	}
 
 	
 
-	public Stock(int stockPrice, int stockHoldings, int stockInc, int stockDec) {
+	public Stock(int stockPrice,int stockIncDec) {
 		super();
 		this.stockPrice = stockPrice;
-		this.stockHoldings = stockHoldings;
-		this.stockInc = stockInc;
-		this.stockDec = stockDec;
+		this.stockIncDec = stockIncDec;
+	}
+	
+	public Stock(int stockRemain) {
+		this.stockRemain = 10;
 	}
 
+	
 
 	public String getStockName() {
 		return stockName;
