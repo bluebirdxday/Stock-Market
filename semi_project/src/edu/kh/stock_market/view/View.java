@@ -1,6 +1,9 @@
 package edu.kh.stock_market.view;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
@@ -87,6 +90,23 @@ public class View {
 	}
 	
 	private void stockDisplay() {
+		
+		LocalDateTime date = LocalDateTime.now();
+		Calendar c = Calendar.getInstance();
+		
+		do {System.out.println(date); // 2턴 돌면 하루 넘어감
+		}
+		while(true) { /////오류 잡기
+	      if(true/*두턴 돌았으면*/) {/*다음 날짜로 넘어가기*/
+				System.out.println(date.plusDays(1));
+			
+		}
+		}
+		
+		
+		
+		System.out.println("종목,가격 나열");
+		System.out.println("service.stockArr 불러오기");
 		
 	}
 	
