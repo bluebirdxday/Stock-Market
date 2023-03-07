@@ -95,9 +95,9 @@ public class View {
 		Calendar c = Calendar.getInstance();
 		
 		do {System.out.println(date); // 2턴 돌면 하루 넘어감
-		}
-		while(true) { /////오류 잡기
-	      if(true/*두턴 돌았으면*/) {/*다음 날짜로 넘어가기*/
+		
+		while(true); { /////오류 잡기
+	      if(true/*두턴 돌았으면??*/) {/*다음 날짜로 넘어가기*/
 				System.out.println(date.plusDays(1));
 			
 		}
