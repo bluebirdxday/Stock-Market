@@ -7,6 +7,7 @@ import edu.kh.stock_market.dto.Stock;
 import edu.kh.stock_market.dto.User;
 
 public class Service {
+	
 	private static final int MIN_CHANGE_PERCENT = -10;
 	private static final int MAX_CHANGE_PERCENT = 10;
 	List<User> users = new ArrayList<>();
@@ -38,6 +39,7 @@ public class Service {
 		stocks.add(new Stock("SK텔레콤", 4000));
 		return stocks;
 	}
+	
 
 	// 주식가격 업데이트
 	public void updatePrice(List<Stock> stocks) {
@@ -90,4 +92,20 @@ public class Service {
 		
 		return true;
 	}
+
+
+	
+//	public void setProperty(User user, List<Stock> stocks) {
+//		
+//		for(Stock stock : stocks) {
+//			if(user.getStocks().containsKey(stock)) {
+//				
+//				user.getStocks().get(stock);
+//
+//			}
+//		}
+//		
+//		
+//	}
+	
 }
