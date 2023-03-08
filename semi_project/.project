@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-<<<<<<< HEAD
-	<name>stock_market</name>
-=======
-	<name>Stock-Market</name>
->>>>>>> d6af77dfbc7a80e5ca6793a43b5f8e34c73f5253
+	<name>semi_project</name>
 	<comment></comment>
 	<projects>
 	</projects>
 	<buildSpec>
-<<<<<<< HEAD
 		<buildCommand>
 			<name>org.eclipse.jdt.core.javabuilder</name>
 			<arguments>
@@ -18,9 +13,5 @@
 	</buildSpec>
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
-=======
-	</buildSpec>
-	<natures>
->>>>>>> d6af77dfbc7a80e5ca6793a43b5f8e34c73f5253
 	</natures>
 </projectDescription>

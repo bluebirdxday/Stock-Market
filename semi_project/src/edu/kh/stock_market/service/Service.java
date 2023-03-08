@@ -1,0 +1,60 @@
+package edu.kh.stock_market.service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import edu.kh.stock_market.dto.Stock;
+import edu.kh.stock_market.dto.User;
+
+public class Service {
+	private static final int MIN_CHANGE_PERCENT = -10;
+	private static final int MAX_CHANGE_PERCENT = 10;
+	List<User> users = new ArrayList<>();
+
+	public Service() {
+	}
+
+	// 주식정보 초기화
+	public List<Stock> initStocks() {
+		List<Stock> stocks = new ArrayList<>();
+		stocks.add(new Stock("삼성전자", 1000));
+		stocks.add(new Stock("SK하이닉스", 2000));
+		stocks.add(new Stock("NAVER", 3000));
+		stocks.add(new Stock("현대차", 2500));
+		stocks.add(new Stock("삼성바이오로직스", 8000));
+		stocks.add(new Stock("LG화학", 15000));
+		stocks.add(new Stock("삼성SDI", 4000));
+		stocks.add(new Stock("셀트리온", 1500));
+		stocks.add(new Stock("카카오", 18000));
+		stocks.add(new Stock("기아차", 1000));
+		stocks.add(new Stock("POSCO", 2000));
+		stocks.add(new Stock("LG전자", 4000));
+		stocks.add(new Stock("SK이노베이션", 5000));
+		stocks.add(new Stock("삼성생명", 50000));
+		stocks.add(new Stock("현대모비스", 2500));
+		stocks.add(new Stock("LG생활건강", 3000));
+		stocks.add(new Stock("KB금융", 7000));
+		stocks.add(new Stock("한국전력", 6000));
+		stocks.add(new Stock("SK텔레콤", 4000));
+		return stocks;
+	}
+
+	// 주식가격 업데이트
+	public void updatePrice(List<Stock> stocks) {
+		for (Stock s : stocks) {
+			int changePercent = (int) (Math.random() * (MAX_CHANGE_PERCENT - MIN_CHANGE_PERCENT + 1))
+					+ MIN_CHANGE_PERCENT;
+			int changeAmount = (int) (s.getStockPrice() * changePercent / 100.0);
+			int newPrice = s.getStockPrice() + changeAmount;
+			s.setPrevPrice(s.getStockPrice());
+			s.setStockPrice(newPrice);
+		}
+	}
+	
+	// 사용자 등록
+	public List<User> registerUserService(String name) {
+		User user = new User(name);
+		users.add(user);
+		return users;
+	}
+}
