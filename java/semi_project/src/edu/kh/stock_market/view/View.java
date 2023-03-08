@@ -143,7 +143,7 @@ public class View {
 	 */
 	public void registerUserInfo() {
 	
-		Scanner scan = new Scanner(System.in);
+		Scanner sc = new Scanner(System.in);
 		
 		int userCount=0;  // 등록 인원
 		int count=1;  // iterator 순회 countcheck
@@ -160,8 +160,8 @@ public class View {
 			
 			try {
 				
-				userCount = scan.nextInt();
-				scan.nextLine();
+				userCount = sc.nextInt();
+				sc.nextLine();
 				
 				if(userCount>1) break;
 				
@@ -189,7 +189,7 @@ public class View {
 		
 		for(int i=1; i<userCount+1; i++) {
 			System.out.printf("USER %d ▶ ", i);
-			inputUserName = scan.nextLine();
+			inputUserName = sc.nextLine();
 			
 			if(inputUserName.equals("")) {
 				System.out.println("닉네임을 제대로 입력해주세요.");
@@ -237,7 +237,7 @@ public class View {
 		int quotePrice;  // 회원 제시가
 		User finalBidder = null;   // 최종 낙찰자
 		
-		Scanner scan = new Scanner(System.in);
+		Scanner sc = new Scanner(System.in);
 		
 		Iterator<User> userIterator;
 		Set<User> userBidder = new HashSet<>(userSet);		
@@ -273,8 +273,8 @@ public class View {
 					while(true) {
 
 						System.out.print(user.getUserName() + " ▶ ");
-						quotePrice = scan.nextInt();
-						scan.nextLine();
+						quotePrice = sc.nextInt();
+						sc.nextLine();
 						
 						if(quotePrice==0) {
 							userIterator.remove();
@@ -335,36 +335,26 @@ public class View {
 		
 		
 		Scanner scan = new Scanner(System.in);
-		Iterator<Stock> stockIterator;
 		Iterator<User> userIterator;
 		Set<User> stockDealUserSet = new HashSet<>(userSet);
 		int stockNum;  // 종목 선택
 		
+		Set<Stock> stockRiseOfFallSet = service.stockRiseOrFall(stock.getStockList());
 		
-		service.stockRiseOrFall();
 		
-		ArrayList<Stock> stockList = new ArrayList<>(stock.getStockList());  // 번호 매칭하기 위한 ArrayList
-		
+		ArrayList<Stock> stockList = new ArrayList<>(stockRiseOfFallSet);  // 번호 매칭하기 위한 ArrayList
 		
 		
 		System.out.printf("[%d년 %d월 %d일]\n", year, month, day);
 		System.out.println("---------------------------------------------------------------------------");		
-		System.out.println(" 번호                종목                        가격                               상승/하락률                            남은 주식수");
+		System.out.println(" 번호                종목                        가격                           상승/하락률               남은 주식수");
 		System.out.println("---------------------------------------------------------------------------");
 		
 				
-//		stockSet = stock.getStockList();
-//		
-//		stockIterator = stockSet.iterator();
-//	
-//		while(stockIterator.hasNext()) {
-//			Stock stock = stockIterator.next();
-//			System.out.printf("%10s             %10d                 %10d\n", stock.getStockName(), stock.getStockPrice(), stock.getStockLeft());
-//		}
 		
 		for(int i=1; i<stockList.size(); i++) {
-			System.out.printf("[%d]   %10s        %10d          %2d\n"
-					, i, stockList.get(i).getStockName(), stockList.get(i).getStockPrice(), stockList.get(i).getStockLeft());
+			System.out.printf("[%d]   %10s        %10d       %10d%%           %2d\n"
+					, i, stockList.get(i).getStockName(), stockList.get(i).getStockPrice(), stockList.get(i).getStockChangeRate(), stockList.get(i).getStockLeft());
 		}
 
 		
@@ -383,7 +373,7 @@ public class View {
 				userIterator.remove();
 				continue;
 			}
-			
+		
 			userInfoAndSelectStockOption(user, stockList.get(stockNum));
 			
 		}
@@ -434,7 +424,6 @@ public class View {
 				
 				System.out.println("[warning]" + e.getClass().getName() + " : " + e.getMessage());
 			}
-			
 			
 		}
 		

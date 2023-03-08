@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
 import java.util.Set;
 
 import edu.kh.stock_market.dto.Stock;
@@ -13,7 +14,6 @@ import edu.kh.stock_market.dto.User;
 public class Service {
 
 	private Set<User> userSet;
-	private Set<Stock> stockSet;
 	
 	public Service() {	
 		userSet = new HashSet<>();
@@ -103,12 +103,24 @@ public class Service {
 //        return result;
 //    }
 //	
+
 	
-	
-	public Set<Stock> stockRiseOrFall() {
+
+	public Set<Stock> stockRiseOrFall(Set<Stock> stockList) {
 		
-		Iterator<Stock> iterator;
+		Random random = new Random();
+		Iterator<Stock> iterator = stockList.iterator();
 		
-		return stockSet;
+		while(iterator.hasNext()) {
+			Stock stock = iterator.next();
+			
+			if(stock.getStockPrice()<100)
+				stock.setStockChangeRate(random.nextInt(10));
+			else
+				stock.setStockChangeRate(random.nextInt(21)-10);
+			
+		}
+		
+		return stockList;
 	}
 }
