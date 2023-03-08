@@ -4,7 +4,8 @@ public class Stock {
 	
 	
 	private int stockPrice;		//현재주가
-	private int stockYesPrice;   //전날주가
+	private int stockYesPrice; //전날주가
+	
 	public int getStockYesPrice() {
 		return stockYesPrice;
 	}
@@ -72,4 +73,10 @@ public class Stock {
 		this.stockName = stockName;
 		this.stockPrice = stockPrice;
 	}
+
+	public void updatePrice() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

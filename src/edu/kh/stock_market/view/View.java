@@ -3,6 +3,7 @@ package edu.kh.stock_market.view;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 import edu.kh.stock_market.dto.Stock;
@@ -15,10 +16,10 @@ public class View {
 	Stock stock = new Stock(1);
 
 	ArrayList<User> users = new ArrayList<User>();
-	ArrayList<Stock> stocks = new ArrayList<Stock>();
+	ArrayList<Stock> service = new ArrayList<Stock>();
+	
 
 	private Scanner sc = new Scanner(System.in);
-	private Service service = new Service();
 
 	public void displayMenu() {
 
@@ -118,11 +119,15 @@ public class View {
 		System.out.println("[순서]");
 		System.out.println();
 
+		List<String> shuffledUserNames = new ArrayList<>();
 		Collections.shuffle(users); // 이름 리스트를 섞는다.(랜덤 호출)
 		for (int i = 0; i < users.size(); i++) {
 			User user = users.get(i);
-			System.out.println((i + 1) + "번째 : " + user.getUserName() + "님");
+			String userName = user.getUserName();
+			System.out.println((i + 1) + "번째 : " + userName + "님");
+			shuffledUserNames.add(userName); // 각 요소를 리스트에 추가한다.
 		}
+
 		stockDisplay();
 		userInfoAndSelectStockOption();
 	}
@@ -139,14 +144,15 @@ public class View {
 
 	// 6. 종목 전광판
 	public void stockDisplay() {
-		System.out.println("———————————————————전광판———————————————————");
+/*		System.out.println("———————————————————전광판———————————————————");
 		System.out.println("[" + user.getDay() + "일차]");
-		for (int i = 0; i < service.getStockList().size(); i++) {
+		for (int i = 0; i < ; i++) {
 			System.out.println((i + 1) + "." + service.getStockList().get(i).getStockName() + " : "
 					+ service.getStockList().get(i).getStockPrice() + "원");
 		}
 		System.out.println("——————————————————————————————————————");
-
+*/
+		
 	}
 
 	// 7. 사용자 정보 및 종목 매수/매도/패스 선택
@@ -158,7 +164,7 @@ public class View {
 		for (int j = 1; j <= 20; j++) {
 			for (int k = 1; k <= 2; k++) {
 				System.out.println("┏━━━━━━━━━━━┓");
-				System.out.println("│  " + j + "일 / "+ (k*6+3)+"시");
+				System.out.println("│  " + j + "일 / " + (k * 6 + 3) + "시");
 				System.out.println("┗━━━━━━━━━━━┛");
 				for (int i = 0; i < users.size(); i++) {
 					if (i != 0)
@@ -228,7 +234,7 @@ public class View {
 
 		for (int i = 0; i < 10; i++) {
 			System.out.printf("%d주 가격 : %d원\n", i + 1,
-					(service.getStockList().get(buyStockIndex - 1).getStockPrice()) * (i + 1));
+					(rs.get(buyStockIndex).getStockPrice()) * (i + 1));
 		}
 		System.out.println();
 
@@ -258,11 +264,12 @@ public class View {
 				remainCash -= service.getStockList().get(buyStockIndex).getStockPrice() * buyStockVolume;
 				stock.setStockRemain(stock.getStockRemain() - buyStockVolume);
 				break;
-				
+
 			}
-			
+
 		}
-		System.out.printf("남아있는 %s 주식 수량 : %d\n", service.getStockList().get(buyStockIndex - 1).getStockName(), stock.getStockRemain());
+		System.out.printf("남아있는 %s 주식 수량 : %d\n", service.getStockList().get(buyStockIndex - 1).getStockName(),
+				stock.getStockRemain());
 		System.out.printf("남아있는 현금 보유량 : %d원\n", remainCash);
 		System.out.println();
 	}
