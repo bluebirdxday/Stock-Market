@@ -5,6 +5,31 @@ public class Stock {
 	
 	private int stockPrice;		//현재주가
 	private int stockYesPrice;   //전날주가
+	private int updatePrice;
+	private int prevPrice;
+	private int stockRemain;  //남은 주식 수 
+	private double stockIncDec;	//등락률
+
+
+	public Stock() {
+	}
+
+	
+	public Stock(String stockName, int stockPrice) {
+		this();
+		this.stockName = stockName;
+		this.stockPrice = stockPrice;
+		this.prevPrice = stockPrice;
+	}
+	
+	public int getPrevPrice() {
+		return prevPrice;
+	}
+
+	public void setPrevPrice(int prevPrice) {
+		this.prevPrice = prevPrice;
+	}
+
 	public int getStockYesPrice() {
 		return stockYesPrice;
 	}
@@ -14,11 +39,6 @@ public class Stock {
 	}
 
 	private String stockName;
-	
-	private int stockRemain;  //남은 주식 수 
-	private double stockIncDec;	//등락률
-
-	public Stock() {}
 
 	public int getStockPrice() {
 		return stockPrice;
@@ -67,9 +87,20 @@ public class Stock {
 	public void setStockName(String stockName) {
 		this.stockName = stockName;
 	}
-	
-	public Stock(String stockName, int stockPrice) {
-		this.stockName = stockName;
-		this.stockPrice = stockPrice;
+
+	public void updatePrice() {
+		// TODO Auto-generated method stub
+		
 	}
+
+	public int getUpdatePrice() {
+		return updatePrice;
+	}
+
+	public void setUpdatePrice(int updatePrice) {
+		this.updatePrice = updatePrice;
+	}
+	public double getChangeRate() {
+        return (stockPrice - prevPrice) / (double) prevPrice * 100.0;
+    }
 }

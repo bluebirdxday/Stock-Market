@@ -3,6 +3,7 @@ package edu.kh.stock_market.view;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 import edu.kh.stock_market.dto.Stock;
@@ -11,6 +12,9 @@ import edu.kh.stock_market.service.Service;
 
 public class View {
 
+	private static final int MIN_CHANGE_PERCENT = -10;
+    private static final int MAX_CHANGE_PERCENT = 10;
+
 	User user = new User();
 	Stock stock = new Stock(1);
 
@@ -18,7 +22,6 @@ public class View {
 	ArrayList<Stock> stocks = new ArrayList<Stock>();
 
 	private Scanner sc = new Scanner(System.in);
-	private Service service = new Service();
 
 	public void displayMenu() {
 
@@ -42,6 +45,9 @@ public class View {
 
 				case 1:
 					registerUserInfo();
+					//stock생성
+					initStocks(); 
+					userInfoAndSelectStockOption();
 					break;
 				case 2:
 					ruleView();
@@ -123,8 +129,8 @@ public class View {
 			User user = users.get(i);
 			System.out.println((i + 1) + "번째 : " + user.getUserName() + "님");
 		}
-		stockDisplay();
-		userInfoAndSelectStockOption();
+		
+
 	}
 
 	// 4. 정보 경매
@@ -138,22 +144,22 @@ public class View {
 	}
 
 	// 6. 종목 전광판
-	public void stockDisplay() {
-		System.out.println("———————————————————전광판———————————————————");
+	/*public void stockDisplay() {
+		/*System.out.println("———————————————————전광판———————————————————");
 		System.out.println("[" + user.getDay() + "일차]");
-		for (int i = 0; i < service.getStockList().size(); i++) {
+		for (int i = 0; i < randomStockList(); i++) {
 			System.out.println((i + 1) + "." + service.getStockList().get(i).getStockName() + " : "
 					+ service.getStockList().get(i).getStockPrice() + "원");
 		}
 		System.out.println("——————————————————————————————————————");
 
 	}
-
+*/
 	// 7. 사용자 정보 및 종목 매수/매도/패스 선택
 	public void userInfoAndSelectStockOption() {
-		User user = new User();
 		System.out.println();
 		System.out.println();
+		User user = null;
 
 		for (int j = 1; j <= 20; j++) {
 			for (int k = 1; k <= 2; k++) {
@@ -161,111 +167,92 @@ public class View {
 				System.out.println("│  " + j + "일 / "+ (k*6+3)+"시");
 				System.out.println("┗━━━━━━━━━━━┛");
 				for (int i = 0; i < users.size(); i++) {
-					if (i != 0)
-						stockDisplay();
-					System.out.println("---" + users.get(i).toString() + "님의 정보---");
+					disStocks(k);
+					user = users.get(i);
+					System.out.println("---" + user.toString() + "님의 정보---");
 					System.out.println();
-					System.out.println("보유 현금 :" + user.getCashHoldings() + "원");
+					System.out.println("보유 현금 :" + user.getCashHoldings() + "원"); // 
 					System.out.println("보유 주식 :" + user.getStocks() + "주");
 					System.out.println();
 					System.out.println("1. 매수");
 					System.out.println("2. 매도");
 					System.out.println("3. pass");
-					System.out.println("4. 뒤로가기");
 					System.out.println();
 					System.out.print("실행할 메뉴를 선택하세요 : ");
 					int input = sc.nextInt();
 
 					switch (input) {
 					case 1:
-						buyView();
+//						buyView();
 						break;
 					case 2:
 						sellView();
 						break;
 					case 3:
 						System.out.println("[아직 매수 / 매도가 가능합니다. 패스하시겠습니까? ]");
+						System.out.println("1. 패스 / 2. 돌아가기");
 						System.out.print("실행할 메뉴를 선택하세요 : ");
 						int input2 = sc.nextInt();
-
-						switch (input2) {
-						case 1:
-							buyView();
-							break;
-						case 2:
-							sellView();
-							break;
-						case 3:
-							break;
-						case 4:
-
-							break;
-						default:
-							System.out.println("[ 잘못 입력하셨습니다. ] ");
-						}
+						if(input2 == 1)
 						continue;
-					case 4:
-
-						break;
 					default:
 						System.out.println("[ 잘못 입력하셨습니다. ] ");
 
 					}
-					i++;
 				}
-
+				updatePrice();
 			}
 		}
 	}
 
 	// 8. 매수 페이지
-	public void buyView() {
-		System.out.print("매수 할 종목을 입력해주세요 : ");
-		int buyStockIndex = sc.nextInt();
-
-		System.out.println("[ " + service.getStockList().get(buyStockIndex - 1).getStockName() + " ]");
-		System.out.println();
-
-		for (int i = 0; i < 10; i++) {
-			System.out.printf("%d주 가격 : %d원\n", i + 1,
-					(service.getStockList().get(buyStockIndex - 1).getStockPrice()) * (i + 1));
-		}
-		System.out.println();
-
-		int buyStockVolume;
-		int remainCash = 100000000;
-
-		while (true) { //
-			System.out.print("매수 할 주식 수량을 입력해주세요 : ");
-			buyStockVolume = sc.nextInt();
-			System.out.println();
-
-			if (user.getCashHoldings() < buyStockVolume
-					* service.getStockList().get(buyStockIndex - 1).getStockPrice()) {
-				System.out.println("[현금이 부족합니다. 다시 입력해 주세요]");
-				break;
-
-			} else if (buyStockVolume > stock.getStockRemain()) {
-				System.out.println("[입력하신 수가 남아있는 주식 수보다 많습니다. 다시 입력해 주세요");
-
-			} else if (stock.getStockRemain() == 0) {
-				System.out.println("주식이 모두 판매되었습니다.");
-				break;
-
-			} else {
-				System.out.println(buyStockVolume + "주를 구매하셨습니다.");
-				System.out.println();
-				remainCash -= service.getStockList().get(buyStockIndex).getStockPrice() * buyStockVolume;
-				stock.setStockRemain(stock.getStockRemain() - buyStockVolume);
-				break;
-				
-			}
-			
-		}
-		System.out.printf("남아있는 %s 주식 수량 : %d\n", service.getStockList().get(buyStockIndex - 1).getStockName(), stock.getStockRemain());
-		System.out.printf("남아있는 현금 보유량 : %d원\n", remainCash);
-		System.out.println();
-	}
+//	public void buyView() {
+//		System.out.print("매수 할 종목을 입력해주세요 : ");
+//		int buyStockIndex = sc.nextInt();
+//
+//		System.out.println("[ " + service.getStockList().get(buyStockIndex - 1).getStockName() + " ]");
+//		System.out.println();
+//
+//		for (int i = 0; i < 10; i++) {
+//			System.out.printf("%d주 가격 : %d원\n", i + 1,
+//					(service.getStockList().get(buyStockIndex - 1).getStockPrice()) * (i + 1));
+//		}
+//		System.out.println();
+//
+//		int buyStockVolume;
+//		int remainCash = 100000000;
+//
+//		while (true) { //
+//			System.out.print("매수 할 주식 수량을 입력해주세요 : ");
+//			buyStockVolume = sc.nextInt();
+//			System.out.println();
+//
+//			if (user.getCashHoldings() < buyStockVolume
+//					* service.getStockList().get(buyStockIndex - 1).getStockPrice()) {
+//				System.out.println("[현금이 부족합니다. 다시 입력해 주세요]");
+//				break;
+//
+//			} else if (buyStockVolume > stock.getStockRemain()) {
+//				System.out.println("[입력하신 수가 남아있는 주식 수보다 많습니다. 다시 입력해 주세요");
+//
+//			} else if (stock.getStockRemain() == 0) {
+//				System.out.println("주식이 모두 판매되었습니다.");
+//				break;
+//
+//			} else {
+//				System.out.println(buyStockVolume + "주를 구매하셨습니다.");
+//				System.out.println();
+//				remainCash -= service.getStockList().get(buyStockIndex).getStockPrice() * buyStockVolume;
+//				stock.setStockRemain(stock.getStockRemain() - buyStockVolume);
+//				break;
+//				
+//			}
+//			
+//		}
+//		System.out.printf("남아있는 %s 주식 수량 : %d\n", service.getStockList().get(buyStockIndex - 1).getStockName(), stock.getStockRemain());
+//		System.out.printf("남아있는 현금 보유량 : %d원\n", remainCash);
+//		System.out.println();
+//	}
 
 	// 9. 매도 페이지
 	public void sellView() {
@@ -278,8 +265,47 @@ public class View {
 	}
 
 	// 11. 순위
-	public void rankingView() {
 
+	
+	// 12. stoc 생성
+	public void initStocks() {
+		stocks.add(new Service("삼성전자", 1000));
+        stocks.add(new Service("SK하이닉스", 2000));
+        stocks.add(new Service("NAVER", 3000));
+        stocks.add(new Service("현대차", 2500));
+        stocks.add(new Service("삼성바이오로직스", 8000));
+        stocks.add(new Service("LG화학", 15000));
+        stocks.add(new Service("삼성SDI", 4000));
+        stocks.add(new Service("셀트리온", 1500));
+        stocks.add(new Service("카카오", 18000));
+        stocks.add(new Service("기아차", 1000));
+        stocks.add(new Service("POSCO", 2000));
+        stocks.add(new Service("LG전자", 4000));
+        stocks.add(new Service("SK이노베이션", 5000));
+        stocks.add(new Service("삼성생명", 50000));
+        stocks.add(new Service("현대모비스", 2500));
+        stocks.add(new Service("LG생활건강", 3000));
+        stocks.add(new Service("KB금융", 7000));
+        stocks.add(new Service("한국전력", 6000));
+        stocks.add(new Service("SK텔레콤", 4000));
+        
+        
 	}
-
+	public void updatePrice() {
+		for (Stock s : stocks) {
+			int changePercent = (int) (Math.random() * (MAX_CHANGE_PERCENT - MIN_CHANGE_PERCENT + 1))
+					+ MIN_CHANGE_PERCENT;
+			int changeAmount = (int) (s.getStockPrice() * changePercent / 100.0);
+			int newPrice = s.getStockPrice() + changeAmount;
+			s.setPrevPrice(s.getStockPrice());
+			s.setStockPrice(newPrice);
+		}
+    }
+	public void disStocks(int day) {
+		for (Stock stock : stocks) {
+            System.out.printf("%s: %,d원 (%.2f%%)\n", stock.getStockName(), stock.getStockPrice(),stock.getChangeRate());
+        }
+	}
 }
+
+
