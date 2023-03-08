@@ -1,7 +1,7 @@
 package edu.kh.stock_market.view;
 
-import java.util.ArrayList;
-import java.util.Collections;
+
+import java.time.LocalDate;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
@@ -15,6 +15,12 @@ public class View {
 	private Service service;
 	private List<User> users;
 	private List<Stock> stocks;
+	
+	LocalDate now = LocalDate.now();  // 현재 날짜 구하기
+	int year = now.getYear();
+	int month = now.getMonthValue();
+	int day = now.getDayOfMonth();
+	
 
 	public View() {
 		sc = new Scanner(System.in);
@@ -77,44 +83,15 @@ public class View {
 		}
 		System.out.println();
 	}
-//	public void registerUserInfo() {
-//		users = new ArrayList<>();
-//		System.out.println("[ 사용자 등록 ]");
-//		System.out.print("게임 참여 인원의 수를 입력하십시오 : ");
-//		int userNum = sc.nextInt();
-//
-//		for (int i = 0; i < userNum; i++) {
-//			System.out.printf("User %d의 아이디를 입력하세요 : ", i + 1);
-//			String name = sc.next();
-//			User user = new User(name);
-//			users.add(user);
-//		}
-//
-//		System.out.println();
-//		System.out.printf("%d명의 User가 등록되었습니다.", userNum);
-//		System.out.println();
-//		System.out.print("\n등록된 User : ");
-//		for (User user : users) {
-//			System.out.print(user.getUserName() + "님 ");
-//		}
-//		System.out.print("등록이 완료되었습니다.");
-//		System.out.println("\n----------------------------------");
-//		System.out.println();
-//		System.out.println("[순서]");
-//		System.out.println();
-//
-//		Collections.shuffle(users); // 이름 리스트를 섞는다.(랜덤 호출)
-//		for (int i = 0; i < users.size(); i++) {
-//			User user = users.get(i);
-//			System.out.println((i + 1) + "번째 : " + user.getUserName() + "님");
-//		}
-//	}
+	
 
 	// 주식정보 출력
 	public void disStocks() {
-		System.out.println("\n--- 주식 정보 ---");
-		for (Stock s : stocks)
-			System.out.println(s.getStockInfo());
+		System.out.println("\n---------- 주식 정보 ----------");
+		for (int i=0; i<stocks.size(); i++) {
+			System.out.printf("[%d]  " , i + 1);
+			System.out.println(stocks.get(i).getStockInfo());
+		}
 	}
 
 	// 현재 유저정보 출력
@@ -151,19 +128,7 @@ public class View {
 
 	}
 
-	// 종목 전광판
-	/*
-	 * public void stockDisplay() {
-	 * /*System.out.println("———————————————————전광판———————————————————");
-	 * System.out.println("[" + user.getDay() + "일차]"); for (int i = 0; i <
-	 * randomStockList(); i++) { System.out.println((i + 1) + "." +
-	 * service.getStockList().get(i).getStockName() + " : " +
-	 * service.getStockList().get(i).getStockPrice() + "원"); }
-	 * System.out.println("——————————————————————————————————————");
-	 * 
-	 * }
-	 */
-	// 사용자 정보 및 종목 매수/매도/패스 선택
+
 	public void userInfoAndSelectStockOption() {
 		System.out.println();
 		System.out.println();
@@ -171,13 +136,13 @@ public class View {
 
 		for (int j = 1; j <= 20; j++) {
 			for (int k = 1; k <= 2; k++) {
-				System.out.println(j + "일 / " + (k == 1 ? "오전" : "오후"));
+				System.out.printf("\n\n %d년 %d월 %d일   %s", year, month, day, (k == 1 ? "오전" : "오후"));
 				for (int i = 0; i < users.size(); i++) {
 					disStocks();
 					user = users.get(i);
 					
 					// 여기에 유저정보 출력하는 메서드
-					
+					System.out.println();
 					System.out.println("1. 매수");
 					System.out.println("2. 매도");
 					System.out.println("3. pass");
@@ -204,6 +169,14 @@ public class View {
 					}
 				}
 				service.updatePrice(stocks);
+			}
+			
+			
+			if(service.calcDay(month, day)) {
+				day++;
+			}else {
+				month++;
+				day = 1;
 			}
 		}
 	}
