@@ -1,27 +1,26 @@
 package edu.kh.stock_market.dto;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
-public class User {
+public class User{
 	
 	final int START_CASH = 100_000;	//시작시 현금
 		
 	private String userName;	  // 유저 이름
 	private int cashHoldings;	  // 보유 현금
-	private List<Stock> stocks;   // 보유 종목
+	private Set<Stock> stocks;   // 보유 종목
 	private int property;         // 총 자산
-	private int bidPrice;		  // 입찰가
 	
-	
+
 	public User(String userName) {
 		this.userName = userName;
 		cashHoldings = START_CASH;
-		stocks = new ArrayList<Stock>();
+		stocks = new TreeSet<Stock>();
 		property = START_CASH;
 	}
 
-
+	
 	public String getUserName() {
 		return userName;
 	}
@@ -42,12 +41,13 @@ public class User {
 	}
 
 
-	public List<Stock> getStocks() {
+
+	public Set<Stock> getStocks() {
 		return stocks;
 	}
 
 
-	public void setStocks(List<Stock> stocks) {
+	public void setStocks(Set<Stock> stocks) {
 		this.stocks = stocks;
 	}
 
@@ -62,16 +62,22 @@ public class User {
 	}
 
 
-	public int getBidPrice() {
-		return bidPrice;
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof User) {
+			User temp = (User)obj;
+			return userName.equals(temp.userName);
+		}
+		
+		return false;
 	}
 
 
-	public void setBidPrice(int bidPrice) {
-		this.bidPrice = bidPrice;
+	@Override
+	public int hashCode() {
+		return userName.hashCode();
 	}
-	
-	
+		
 	
 	
 }
