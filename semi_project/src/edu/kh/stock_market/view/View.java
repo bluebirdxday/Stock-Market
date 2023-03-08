@@ -1,19 +1,20 @@
 package edu.kh.stock_market.view;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
+import edu.kh.stock_market.dto.User;
 import edu.kh.stock_market.service.Service;
 
 public class View {
 	
 	private Scanner sc = new Scanner(System.in);
 	private Service service = new Service();
+	
+	User user = new User();
+	List<User> users = new ArrayList<User>();
 
 	public void mainView() {
 		System.out.println("일개미 주식 거래소에 오신 것을 환영합니다!!");
@@ -35,7 +36,7 @@ public class View {
 				switch(input) {
 				case 1 : registerUserInfo(); input=0;
 				         System.out.println("게임을 시작합니다!"); 
-				         stockDisplay(); break;
+				         break;
 				case 2 : ruleView(); break;
 				case 3 : System.out.println("게임을 종료합니다.");
 				default : System.out.println("잘못 입력하셨습니다.");
@@ -50,15 +51,17 @@ public class View {
 
 	
 	// 사용자 등록
-	private void registerUserInfo() {
+	public void registerUserInfo() {
 		
-		System.out.println("[사용자 등록하기]");
-		System.out.print("등록할 인원 수 : ");
-		int userNumber = sc.nextInt();
-		
-		String[] user = service.registerUserService(userNumber);
-		
-		System.out.println(String.join("님,",user) + "님 등록이 완료되었습니다.");
+		System.out.println("[ 사용자 등록 ]");
+		System.out.print("게임 참여 인원의 수를 입력하십시오 : ");
+		int userNum = sc.nextInt();
+
+		for (int i = 0; i < userNum; i++) {
+			System.out.printf("User %d의 아이디를 입력하세요 : ", i + 1);
+			users = service.registerUserService(sc.next());
+		}
+		System.out.println();
 	}
 
 
@@ -89,26 +92,28 @@ public class View {
 	
 	}
 	
-	private void stockDisplay() {
-		
-		LocalDateTime date = LocalDateTime.now();
-		Calendar c = Calendar.getInstance();
-		
-		do {System.out.println(date); // 2턴 돌면 하루 넘어감
-		
-		while(true); { /////오류 잡기
-	      if(true/*두턴 돌았으면??*/) {/*다음 날짜로 넘어가기*/
-				System.out.println(date.plusDays(1));
-			
-		}
-		}
-		
-		
-		
-		System.out.println("종목,가격 나열");
-		System.out.println("service.stockArr 불러오기");
-		
-	}
+//	private void stockDisplay() {
+//		
+//		LocalDateTime date = LocalDateTime.now();
+//		Calendar c = Calendar.getInstance();
+//		
+//		do {System.out.println(date); // 2턴 돌면 하루 넘어감
+//		
+//		while(true); { /////오류 잡기
+//	      if(true/*두턴 돌았으면??*/) {/*다음 날짜로 넘어가기*/
+//				System.out.println(date.plusDays(1));
+//			
+//		}
+//		}
+//		
+//		
+//		
+//		System.out.println("종목,가격 나열");
+//		System.out.println("service.stockArr 불러오기");
+//		
+//	}
+	
+	
 	
 	private void userInfoAndSelectStockOption() {
 		

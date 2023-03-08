@@ -1,120 +1,104 @@
 package edu.kh.stock_market.dto;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-public class User /*implements Comparable<User>*/{ // Comparable<T> 인터페이스 안해도 되나..?
+public class User{
 	
-	final int START_CASH = 100_000;				//시작시 현금량
-	final String SCREEN = "KH Stock Market";
-	final int STOCK_QUANTITIY = 10; 			//초기 주식 수 
-	
-	private int day;			    //날짜
-	private int turn;			    //턴
-	private String userName;	//유저이름
-	private int userNum;		  //유저순서
-	private int cashHoldings;	//보유 현금
-    private List<Stock> stocks; 
-	private int property;		  // 총 자산
-	private int bidPrice;		  // 입찰가
-
-	public void User() {
+	private int cash = 100000;	//시작시 현금
 		
-	}
+	private String userName;	  // 유저 이름
+	private int cashHoldings;	  // 보유 현금
+	private List<Stock> stocks;   // 보유 종목
+	private int property;         // 총 자산
+	
+	List<User> users = new ArrayList<>();
+	
 
-	public User(int day, int turn, String userName, int userNum, int cashHoldings, List<Stock> stocks, int property,
-			int bidPrice) {
-		super();
-		this.day = day;
-		this.turn = turn;
+	public User() {
+	}
+	
+	public User(String userName) {
 		this.userName = userName;
-		this.userNum = userNum;
-		this.cashHoldings = cashHoldings;
-		this.stocks = stocks;
-		this.property = property;
-		this.bidPrice = bidPrice;
+		cashHoldings = cash;
+		stocks = new ArrayList<Stock>();
+		property = cash;
 	}
 
-	public int getDay() {
-		return day;
-	}
-
-	public void setDay(int day) {
-		this.day = day;
-	}
-
-	public int getTurn() {
-		return turn;
-	}
-
-	public void setTurn(int turn) {
-		this.turn = turn;
-	}
-
+	
 	public String getUserName() {
 		return userName;
 	}
+
 
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
 
-	public int getUserNum() {
-		return userNum;
-	}
-
-	public void setUserNum(int userNum) {
-		this.userNum = userNum;
-	}
 
 	public int getCashHoldings() {
 		return cashHoldings;
 	}
 
+
 	public void setCashHoldings(int cashHoldings) {
 		this.cashHoldings = cashHoldings;
 	}
+
+
 
 	public List<Stock> getStocks() {
 		return stocks;
 	}
 
+
 	public void setStocks(List<Stock> stocks) {
 		this.stocks = stocks;
 	}
+
 
 	public int getProperty() {
 		return property;
 	}
 
+
 	public void setProperty(int property) {
 		this.property = property;
 	}
 
-	public int getBidPrice() {
-		return bidPrice;
+
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof User) {
+			User temp = (User)obj;
+			return userName.equals(temp.userName);
+		}
+		
+		return false;
 	}
 
-	public void setBidPrice(int bidPrice) {
-		this.bidPrice = bidPrice;
+
+	@Override
+	public int hashCode() {
+		return userName.hashCode();
+	}
+		
+	public List<User> getUsers() {
+		return users;
 	}
 
-	public int getSTART_CASH() {
-		return START_CASH;
-	}
-
-	public int getSTOCK_QUANTITIY() {
-		return STOCK_QUANTITIY;
+	public void setUsers(List<User> users) {
+		this.users = users;
 	}
 
 	@Override
 	public String toString() {
-		return "User [START_CASH=" + START_CASH + ", SCREEN=" + SCREEN + ", STOCK_QUANTITIY=" + STOCK_QUANTITIY
-				+ ", day=" + day + ", turn=" + turn + ", userName=" + userName + ", userNum=" + userNum
-				+ ", cashHoldings=" + cashHoldings + ", stocks=" + stocks + ", property=" + property + ", bidPrice="
-				+ bidPrice + "]";
+		return "User [cash=" + cash + ", userName=" + userName + ", cashHoldings=" + cashHoldings + ", stocks=" + stocks
+				+ ", property=" + property + ", users=" + users + "]";
 	}
 	
 	
+	
+
 	
 }
