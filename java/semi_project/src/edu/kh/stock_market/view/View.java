@@ -26,7 +26,7 @@ public class View {
 	LocalDate now = LocalDate.now();  // 현재 날짜 구하기
 	int year = now.getYear();
 	int month = now.getMonthValue();
-	int day = now.getDayOfYear();
+	int day = now.getDayOfMonth();
 	
 	
 	/** 시작 화면
@@ -87,7 +87,18 @@ public class View {
 		
 		informationAuction();   // 랜덤으로 나타나게 하기
 		
-		stockDisplay();
+		
+		for(int i=0; i<20; i++) {
+			
+			stockDisplay();
+			if(service.calcDay(month, day)) {
+				day++;
+			}else {
+				month++;
+				day = 1;
+			}
+		}
+		
 		
 		
 		
@@ -344,7 +355,7 @@ public class View {
 		
 		ArrayList<Stock> stockList = new ArrayList<>(stockRiseOfFallSet);  // 번호 매칭하기 위한 ArrayList
 		
-		
+		System.out.println();
 		System.out.printf("[%d년 %d월 %d일]\n", year, month, day);
 		System.out.println("---------------------------------------------------------------------------");		
 		System.out.println(" 번호                종목                        가격                           상승/하락률               남은 주식수");
@@ -377,7 +388,7 @@ public class View {
 			userInfoAndSelectStockOption(user, stockList.get(stockNum));
 			
 		}
-		
+				
 	}
 	
 	
