@@ -18,6 +18,8 @@ import edu.kh.stock_market.service.Service;
 public class View {
 
 	
+	final int totalDay = 10;
+	
 	private Stock stock = new Stock();
 	private Service service = new Service();
 	Set<User> userSet = new HashSet<>();  // 회원 리스트
@@ -85,10 +87,13 @@ public class View {
 		}while(!menuChoice.equals(null));
 		
 		
-		informationAuction();   // 랜덤으로 나타나게 하기
+		if((int)(Math.random()*1) == 0) {	
+			informationAuction();   // 랜덤으로 나타나게 하기
+		}
 		
 		
-		for(int i=0; i<20; i++) {
+		
+		for(int i=0; i<totalDay; i++) {
 			
 			stockDisplay();
 			if(service.calcDay(month, day)) {
@@ -97,9 +102,10 @@ public class View {
 				month++;
 				day = 1;
 			}
+			
 		}
 		
-		
+		rankingView();
 		
 		
 	}
@@ -452,7 +458,6 @@ public class View {
 	 * 
 	 */
 	public void buyView() {
-		
 		
 	}
 	
