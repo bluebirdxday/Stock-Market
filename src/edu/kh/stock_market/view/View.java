@@ -269,25 +269,25 @@ public class View {
 	
 	// 12. stoc 생성
 	public void initStocks() {
-		stocks.add(new Service("삼성전자", 1000));
-        stocks.add(new Service("SK하이닉스", 2000));
-        stocks.add(new Service("NAVER", 3000));
-        stocks.add(new Service("현대차", 2500));
-        stocks.add(new Service("삼성바이오로직스", 8000));
-        stocks.add(new Service("LG화학", 15000));
-        stocks.add(new Service("삼성SDI", 4000));
-        stocks.add(new Service("셀트리온", 1500));
-        stocks.add(new Service("카카오", 18000));
-        stocks.add(new Service("기아차", 1000));
-        stocks.add(new Service("POSCO", 2000));
-        stocks.add(new Service("LG전자", 4000));
-        stocks.add(new Service("SK이노베이션", 5000));
-        stocks.add(new Service("삼성생명", 50000));
-        stocks.add(new Service("현대모비스", 2500));
-        stocks.add(new Service("LG생활건강", 3000));
-        stocks.add(new Service("KB금융", 7000));
-        stocks.add(new Service("한국전력", 6000));
-        stocks.add(new Service("SK텔레콤", 4000));
+		stocks.add(new Stock("삼성전자", 1000));
+        stocks.add(new Stock("SK하이닉스", 2000));
+        stocks.add(new Stock("NAVER", 3000));
+        stocks.add(new Stock("현대차", 2500));
+        stocks.add(new Stock("삼성바이오로직스", 8000));
+        stocks.add(new Stock("LG화학", 15000));
+        stocks.add(new Stock("삼성SDI", 4000));
+        stocks.add(new Stock("셀트리온", 1500));
+        stocks.add(new Stock("카카오", 18000));
+        stocks.add(new Stock("기아차", 1000));
+        stocks.add(new Stock("POSCO", 2000));
+        stocks.add(new Stock("LG전자", 4000));
+        stocks.add(new Stock("SK이노베이션", 5000));
+        stocks.add(new Stock("삼성생명", 50000));
+        stocks.add(new Stock("현대모비스", 2500));
+        stocks.add(new Stock("LG생활건강", 3000));
+        stocks.add(new Stock("KB금융", 7000));
+        stocks.add(new Stock("한국전력", 6000));
+        stocks.add(new Stock("SK텔레콤", 4000));
         
         
 	}
