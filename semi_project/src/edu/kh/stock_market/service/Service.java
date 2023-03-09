@@ -102,19 +102,21 @@ public class Service {
 			userStocks.add(userStock);
 		}else{
 			
-			for(UserStock userStock : userStocks) {
+			
+			for(int i=0; i<userStocks.size(); i++) {
 				
-				if(userStock.getStockName().equals(chosenStock.getStockName()))  // 매수한 주식종목명과 사용자 종목리스트 내 종목명이 일치하면 주식수만 변경
-					userStock.setStockCount(buyStockNum); 
+				if(userStocks.get(i).getStockName().equals(chosenStock.getStockName()))  // 매수한 주식종목명과 사용자 종목리스트 내 종목명이 일치하면 주식수만 변경
+					userStocks.get(i).setStockCount(buyStockNum); 
 				else {
 					UserStock userStock2 = new UserStock(chosenStock.getStockName(), buyStockNum);   // 일치하는 게 없으면 추가
 					userStocks.add(userStock2);
 				}
+				
 			}
+			
 		}
 		
 		return userStocks;
-
 	
 	}
 	

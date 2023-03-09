@@ -6,8 +6,8 @@ public class UserStock {
 	private int stockCount;   // 보유 주식 수
 	private int stockMarketValue;  // 보유 주식 평가 금액
 	private int averagePrice; // 평균단가
-	
-	
+
+
 	public UserStock(String stockName, int stockCount) {
 		this.stockName = stockName;
 		this.stockCount = stockCount;

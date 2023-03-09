@@ -176,9 +176,9 @@ public class View {
 				System.out.println("-----------------------------------");
 				System.out.println("[ " + user.getUserName() + "님의 자산 ]");
 				System.out.println("총 평가 금액  : " + user.getProperty() + "원");
-				System.out.println("전일 대비 : ");
+				System.out.println("전일 대비 ");
 
-				
+			
 				if (userStocks.size() != 0) {
 
 					System.out.println();
@@ -284,10 +284,14 @@ public class View {
 
 			if (user.getCashHoldings() < chosenStock.getStockPrice() * buyStockNum)
 				System.out.println("현금이 부족합니다. 다시 입력해주세요.");
+			
 			else {
 
-
+				
 				userStocks = service.addStock(userStocks, chosenStock, buyStockNum);
+				
+				user.setUserStockList(userStocks);
+				
 
 				int totalPrice = chosenStock.getStockPrice() * buyStockNum; // 매수 종목 가격 * 매수 주식 수
 
@@ -311,7 +315,6 @@ public class View {
 				
 				break;
 			}
-
 		}
 
 	}

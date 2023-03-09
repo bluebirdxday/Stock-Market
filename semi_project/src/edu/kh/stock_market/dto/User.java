@@ -50,7 +50,7 @@ public class User {
 	public void setUserStockList(List<UserStock> userStockList) {
 		this.userStockList = userStockList;
 	}
-	
+
 	
 
 	// 총 자산 업데이트 (매수, 매도 시)
