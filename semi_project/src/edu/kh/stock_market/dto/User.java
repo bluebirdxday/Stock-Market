@@ -7,7 +7,7 @@ public class User{
    private int cash = 100000;   //시작시 현금
    private String userName;     // 유저 이름
    private int cashHoldings;     // 보유 현금
-   private List<Stock> stocks;   // 보유 종목
+   private List<UserStock> userStockList;   // 보유 종목
    private int property;         // 총 자산
    
    public User() {
@@ -16,7 +16,7 @@ public class User{
    public User(String userName) {
       this.userName = userName;
       cashHoldings = cash;
-      stocks = new ArrayList<Stock>();
+      userStockList = new ArrayList<>();
       property = cash;
    }
 
@@ -41,14 +41,13 @@ public class User{
    }
 
 
-
-   public List<Stock> getStocks() {
-      return stocks;
+   public List<UserStock> getUserStockList() {
+      return userStockList;
    }
 
 
-   public void setStocks(List<Stock> stocks) {
-      this.stocks = stocks;
+   public void setUserStockList(List<UserStock> userStockList) {
+      this.userStockList = userStockList;
    }
 
 
@@ -79,7 +78,8 @@ public class User{
 
    @Override
    public String toString() {
-      return "User [cash=" + cash + ", userName=" + userName + ", cashHoldings=" + cashHoldings + ", stocks=" + stocks
+      return "User [cash=" + cash + ", userName=" + userName + ", cashHoldings=" + cashHoldings + ", stocks=" + userStockList
             + ", property=" + property +"]";
    }
+
 }
