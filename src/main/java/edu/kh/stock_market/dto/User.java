@@ -1,126 +1,84 @@
 package edu.kh.stock_market.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class User{
-	final int START_CASH = 100_000;				// 시작시 현금량
-	final String SCREEN = "KH Stock Market";
-	final int STOCK_QUANTITIY = 10; 			// 초기 주식 수 
-		
-	private int day;			// 날짜
-	private int turn;			// 턴
-	private String userName;	// 유저이름
-	private int userNum;		// 유저순서
-	private int cashHoldings;	// 보유 현금
-	private List<Stock> stocks; 
-	private int property;		// 총 자산
-	private int bidPrice;		// 입찰가
-	
-	
-	public User() {}
-	
-	public User(String userName) { // ???
-		super();
-		this.userName = userName;
-	}
+   private int cash = 100000;   //시작시 현금
+   
+   private String userName;     // 유저 이름
+   private int cashHoldings;     // 보유 현금
+   private List<Stock> stocks;   // 보유 종목
+   private int property;         // 총 자산
+   
+   public User() {}
+   
+   public User(String userName) {
+      this.userName = userName;
+      cashHoldings = cash;
+      stocks = new ArrayList<Stock>();
+      property = cash;
+   }
 
-	public User(int day, int turn, String userName, int userNum, int cashHoldings, List<Stock> stocks, int property,
-			int bidPrice) {
-		super();
-		this.day = day;
-		this.turn = turn;
-		this.userName = userName;
-		this.userNum = userNum;
-		this.cashHoldings = cashHoldings;
-		this.stocks = stocks;
-		this.property = property;
-		this.bidPrice = bidPrice;
-	}
+   
+   public String getUserName() {
+      return userName;
+   }
 
-	
-	public int getDay() {
-		return day;
-	}
 
-	public void setDay(int day) {
-		this.day = day;
-	}
+   public void setUserName(String userName) {
+      this.userName = userName;
+   }
 
-	public int getTurn() {
-		return turn;
-	}
 
-	public void setTurn(int turn) {
-		this.turn = turn;
-	}
+   public int getCashHoldings() {
+      return cashHoldings;
+   }
 
-	public String getUserName() {
-		return userName;
-	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
+   public void setCashHoldings(int cashHoldings) {
+      this.cashHoldings = cashHoldings;
+   }
 
-	public int getUserNum() {
-		return userNum;
-	}
 
-	public void setUserNum(int userNum) {
-		this.userNum = userNum;
-	}
+   public List<Stock> getStocks() {
+      return stocks;
+   }
 
-	public int getCashHoldings() {
-		return cashHoldings;
-	}
 
-	public void setCashHoldings(int cashHoldings) {
-		this.cashHoldings = cashHoldings;
-	}
+   public void setStocks(List<Stock> stocks) {
+      this.stocks = stocks;
+   }
 
-	public List<Stock> getStocks() {
-		return stocks;
-	}
 
-	public void setStocks(List<Stock> stocks) {
-		this.stocks = stocks;
-	}
+   public int getProperty() {
+      return property;
+   }
 
-	public int getProperty() {
-		return property;
-	}
 
-	public void setProperty(int property) {
-		this.property = property;
-	}
+   public void setProperty(int property) {
+      this.property = property;
+   }
 
-	public int getBidPrice() {
-		return bidPrice;
-	}
 
-	public void setBidPrice(int bidPrice) {
-		this.bidPrice = bidPrice;
-	}
+   @Override
+   public boolean equals(Object obj) {
+      if(obj instanceof User) {
+         User temp = (User)obj;
+         return userName.equals(temp.userName);
+      }
+      return false;
+   }
 
-	public int getSTART_CASH() {
-		return START_CASH;
-	}
 
-	public String getSCREEN() {
-		return SCREEN;
-	}
+   @Override
+   public int hashCode() {
+      return userName.hashCode();
+   }
 
-	public int getSTOCK_QUANTITIY() {
-		return STOCK_QUANTITIY;
-	}
-
-	
-	@Override
-	public String toString() {
-		return "User [START_CASH=" + START_CASH + ", SCREEN=" + SCREEN + ", STOCK_QUANTITIY=" + STOCK_QUANTITIY
-				+ ", day=" + day + ", turn=" + turn + ", userName=" + userName + ", userNum=" + userNum
-				+ ", cashHoldings=" + cashHoldings + ", stocks=" + stocks + ", property=" + property + ", bidPrice="
-				+ bidPrice + "]";
-	}
+   @Override
+   public String toString() {
+      return "User [cash=" + cash + ", userName=" + userName + ", cashHoldings=" + cashHoldings + ", stocks=" + stocks
+            + ", property=" + property +"]";
+   }
 }
-
