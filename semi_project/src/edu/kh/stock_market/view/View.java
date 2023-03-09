@@ -1,10 +1,9 @@
 package edu.kh.stock_market.view;
 
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.InputMismatchException;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
 import java.util.Scanner;
 
 import edu.kh.stock_market.dto.Stock;
@@ -179,21 +178,29 @@ public class View {
 				System.out.println("총 평가 금액  : " + user.getProperty() + "원");
 				System.out.println("전일 대비 : ");
 
-//				if (user.getStocks().size() != 0) {
-//
-//					System.out.println();
-//					System.out.println("   종목명              평단              주식수               현재금액               수익률");
-//
-//					Iterator<Stock> iterator = user.getStocks().keySet().iterator();
-//
-//					while (iterator.hasNext()) {
-//						Stock stock = iterator.next();
-//						System.out.printf("   %s     %d      %d", stock.getStockName(), user.holdStockCount(stock),
-//								stock.getStockPrice());
-//
-//					} // 일단 종목명, 주식수, 현재금액만
-//
-//				}
+				
+				if (userStocks.size() != 0) {
+
+					System.out.println();
+					System.out.println("===========================================================");
+					System.out.println("   종목명              평단              주식수               현재금액               수익률");
+					System.out.println("===========================================================");
+
+					
+					Iterator<UserStock> iterator = userStocks.iterator();
+					
+					while(iterator.hasNext()) {
+						UserStock userStock = iterator.next();
+						
+						
+						System.out.printf("   %s                  %d                    \n", userStock.getStockName(), userStock.getStockCount());
+						
+					}
+
+
+					System.out.println("===========================================================");
+				}
+				
 
 				System.out.println();
 				System.out.println("1. 매수");
