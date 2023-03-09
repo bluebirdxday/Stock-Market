@@ -1,12 +1,15 @@
 package edu.kh.stock_market.view;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 import edu.kh.stock_market.dto.Stock;
 import edu.kh.stock_market.dto.User;
+import edu.kh.stock_market.dto.UserStock;
 import edu.kh.stock_market.service.Service;
 
 public class View {
@@ -14,6 +17,7 @@ public class View {
 	private Service service;
 	private List<User> users;
 	private List<Stock> stocks;
+	private List<UserStock> userStocks;
 
 	LocalDate now = LocalDate.now(); // 현재 날짜 구하기
 	int year = now.getYear();
@@ -80,6 +84,8 @@ public class View {
 			users = service.registerUserService(sc.next());
 		}
 		System.out.println();
+		
+		
 	}
 
 	// 주식정보 출력
@@ -165,6 +171,7 @@ public class View {
 				
 				disStocks();
 				user = users.get(i);
+				userStocks = user.getUserStockList();
 
 				System.out.println();
 				System.out.println("-----------------------------------");
@@ -198,7 +205,7 @@ public class View {
 
 				switch (input) {
 				case 1:
-					buyView(user);
+					buyView(user, userStocks);
 					break;
 				case 2:
 					sellView();
@@ -226,7 +233,7 @@ public class View {
 	}
 
 	// 매수 페이지
-	public void buyView(User user) {
+	public void buyView(User user, List<UserStock> userStocks) {
 
 		System.out.print("매수할 종목의 번호를 입력해주세요 ▶ ");
 
@@ -272,14 +279,8 @@ public class View {
 				System.out.println("현금이 부족합니다. 다시 입력해주세요.");
 			else {
 
-				if (user.getStocks().containsKey(chosenStock)) { // 선택한 종목을 이미 보유하고 있다면
 
-					user.updateStock(chosenStock, buyStockNum);
-
-				} else {
-					user.addStock(chosenStock, buyStockNum);
-
-				}
+				userStocks = service.addStock(userStocks, chosenStock, buyStockNum);
 
 				int totalPrice = chosenStock.getStockPrice() * buyStockNum; // 매수 종목 가격 * 매수 주식 수
 
@@ -288,10 +289,19 @@ public class View {
 				System.out.println();
 				System.out.println("[매수가 완료되었습니다.]");
 				System.out.println("매입 금액 : " + totalPrice);
+				
+				
+				int index = -1;
 
-				System.out.println(chosenStock.getStockName() + " 보유 주식 수 : " + user.getStocks().get(chosenStock));
+				for(int i=0; i<userStocks.size(); i++) {
+					
+					if(userStocks.get(i).getStockName().equals(chosenStock.getStockName()))
+						index = i;
+				}
+
+				System.out.println(chosenStock.getStockName() + " 보유 주식 수 : " + userStocks.get(index).getStockCount());
 				// ?? 사용자가 기존에 보유한 주식 수 + 매수한 주식 수 인지 || 사용자가 방금 매수한 주식 수만 말하는 건지 ?? -- 일단 전자로 함
-
+				
 				break;
 			}
 
@@ -299,6 +309,7 @@ public class View {
 
 	}
 
+	
 	// 매도 페이지
 	public void sellView() {
 

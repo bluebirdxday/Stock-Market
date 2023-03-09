@@ -5,6 +5,7 @@ import java.util.List;
 
 import edu.kh.stock_market.dto.Stock;
 import edu.kh.stock_market.dto.User;
+import edu.kh.stock_market.dto.UserStock;
 
 public class Service {
 	
@@ -92,20 +93,30 @@ public class Service {
 		
 		return true;
 	}
+	
+	
+	public List<UserStock> addStock(List<UserStock> userStocks, Stock chosenStock, int buyStockNum) {
 
+		if(userStocks.isEmpty()) {  // 사용자 종목 리스트가 비어있다면 새로 생성해서 추가
+			UserStock userStock = new UserStock(chosenStock.getStockName(), buyStockNum);
+			userStocks.add(userStock);
+		}else{
+			
+			for(UserStock userStock : userStocks) {
+				
+				if(userStock.getStockName().equals(chosenStock.getStockName()))  // 매수한 주식종목명과 사용자 종목리스트 내 종목명이 일치하면 주식수만 변경
+					userStock.setStockCount(buyStockNum); 
+				else {
+					UserStock userStock2 = new UserStock(chosenStock.getStockName(), buyStockNum);   // 일치하는 게 없으면 추가
+					userStocks.add(userStock2);
+				}
+			}
+		}
+		
+		return userStocks;
 
 	
-//	public void setProperty(User user, List<Stock> stocks) {
-//		
-//		for(Stock stock : stocks) {
-//			if(user.getStocks().containsKey(stock)) {
-//				
-//				user.getStocks().get(stock);
-//
-//			}
-//		}
-//		
-//		
-//	}
+	}
+	
 	
 }
