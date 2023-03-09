@@ -1,6 +1,6 @@
 package edu.kh.stock_market.view;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.InputMismatchException;
 import java.util.List;
@@ -15,6 +15,11 @@ public class View {
 	private Service service;
 	private List<User> users;
 	private List<Stock> stocks;
+
+	LocalDate now = LocalDate.now(); // 현재 날짜 구하기
+	int year = now.getYear();
+	int month = now.getMonthValue();
+	int day = now.getDayOfMonth();
 
 	public View() {
 		sc = new Scanner(System.in);
@@ -64,7 +69,6 @@ public class View {
 	}
 
 	// 사용자 등록
-	// 사용자 등록
 	public void registerUserInfo() {
 
 		System.out.println("[ 사용자 등록 ]");
@@ -76,39 +80,26 @@ public class View {
 			users = service.registerUserService(sc.next());
 		}
 		System.out.println();
+		System.out.printf("%d명의 User가 등록되었습니다.", userNum);
+		System.out.println();
+		System.out.print("\n등록된 User : ");
+		for (User user : users) {
+			System.out.print(user.getUserName() + "님 ");
+		}
+		System.out.print("등록이 완료되었습니다.");
+		System.out.println("\n----------------------------------");
+		System.out.println();
+		System.out.println("[순서]");
+		System.out.println();
+
+		Collections.shuffle(users); // 이름 리스트를 섞는다.(랜덤 호출)
+		for (int i = 0; i < users.size(); i++) {
+			User user = users.get(i);
+			System.out.println((i + 1) + "번째 : " + user.getUserName() + "님");
+			
+		}
 	}
-//	public void registerUserInfo() {
-//		users = new ArrayList<>();
-//		System.out.println("[ 사용자 등록 ]");
-//		System.out.print("게임 참여 인원의 수를 입력하십시오 : ");
-//		int userNum = sc.nextInt();
-//
-//		for (int i = 0; i < userNum; i++) {
-//			System.out.printf("User %d의 아이디를 입력하세요 : ", i + 1);
-//			String name = sc.next();
-//			User user = new User(name);
-//			users.add(user);
-//		}
-//
-//		System.out.println();
-//		System.out.printf("%d명의 User가 등록되었습니다.", userNum);
-//		System.out.println();
-//		System.out.print("\n등록된 User : ");
-//		for (User user : users) {
-//			System.out.print(user.getUserName() + "님 ");
-//		}
-//		System.out.print("등록이 완료되었습니다.");
-//		System.out.println("\n----------------------------------");
-//		System.out.println();
-//		System.out.println("[순서]");
-//		System.out.println();
-//
-//		Collections.shuffle(users); // 이름 리스트를 섞는다.(랜덤 호출)
-//		for (int i = 0; i < users.size(); i++) {
-//			User user = users.get(i);
-//			System.out.println((i + 1) + "번째 : " + user.getUserName() + "님");
-//		}
-//	}
+
 
 	// 주식정보 출력
 	public void disStocks() {
@@ -209,7 +200,7 @@ public class View {
 				service.updatePrice(stocks);
 			}
 		}
-	}
+	
 
 	// 매수 페이지
 //	public void buyView() {
