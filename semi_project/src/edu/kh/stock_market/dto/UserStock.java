@@ -8,9 +8,10 @@ public class UserStock {
 	private int averagePrice; // 평균단가
 
 
-	public UserStock(String stockName, int stockCount) {
+	public UserStock(String stockName, int stockCount,int averagePrice) {
 		this.stockName = stockName;
 		this.stockCount = stockCount;
+		this.averagePrice = averagePrice;
 	}
 
 
@@ -30,7 +31,7 @@ public class UserStock {
 
 
 	public void setStockCount(int stockCount) {
-		this.stockCount += stockCount;
+		this.stockCount = stockCount;
 	}
 
 

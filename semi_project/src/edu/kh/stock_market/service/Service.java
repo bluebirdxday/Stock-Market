@@ -95,30 +95,30 @@ public class Service {
 	}
 	
 	
-	public List<UserStock> addStock(List<UserStock> userStocks, Stock chosenStock, int buyStockNum) {
-
-		if(userStocks.isEmpty()) {  // 사용자 종목 리스트가 비어있다면 새로 생성해서 추가
-			UserStock userStock = new UserStock(chosenStock.getStockName(), buyStockNum);
-			userStocks.add(userStock);
-		}else{
-			
-			
-			for(int i=0; i<userStocks.size(); i++) {
-				
-				if(userStocks.get(i).getStockName().equals(chosenStock.getStockName()))  // 매수한 주식종목명과 사용자 종목리스트 내 종목명이 일치하면 주식수만 변경
-					userStocks.get(i).setStockCount(buyStockNum); 
-				else {
-					UserStock userStock2 = new UserStock(chosenStock.getStockName(), buyStockNum);   // 일치하는 게 없으면 추가
-					userStocks.add(userStock2);
-				}
-				
-			}
-			
-		}
-		
-		return userStocks;
-	
-	}
+//	public List<UserStock> addStock(List<UserStock> userStocks, Stock chosenStock, int buyStockNum) {
+//
+//		if(userStocks.isEmpty()) {  // 사용자 종목 리스트가 비어있다면 새로 생성해서 추가
+//			UserStock userStock = new UserStock(chosenStock.getStockName(), buyStockNum);
+//			userStocks.add(userStock);
+//		}else{
+//			
+//			
+//			for(int i=0; i<userStocks.size(); i++) {
+//				
+//				if(userStocks.get(i).getStockName().equals(chosenStock.getStockName()))  // 매수한 주식종목명과 사용자 종목리스트 내 종목명이 일치하면 주식수만 변경
+//					userStocks.get(i).setStockCount(buyStockNum); 
+//				else {
+//					UserStock userStock2 = new UserStock(chosenStock.getStockName(), buyStockNum);   // 일치하는 게 없으면 추가
+//					userStocks.add(userStock2);
+//				}
+//				
+//			}
+//			
+//		}
+//		
+//		return userStocks;
+//	
+//	}
 	
 	
 }

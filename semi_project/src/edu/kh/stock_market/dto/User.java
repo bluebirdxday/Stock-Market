@@ -58,6 +58,31 @@ public class User {
 		cashHoldings -= totalPrice; // 보유현금 = 보유 현금 - 매수 종목 가격 * 매수 주식 수
 		property = cashHoldings + totalPrice; // 총자산 = 보유현금 + 매수 종목 가격 * 매수 주식 수
 	}
+	
+	// 주식 구매
+	public void buyStock(Stock buyStock, int num) {
+		// 구매할 주식이 이미 보유중인지 비교
+		for(UserStock s : userStockList){
+			// 구매할 주식의 이름과 보유중식 주식의 이름 중 같은 것이 있는 지 비교
+			// 같은 것이 있다면, 처리해주고 메서드 종료.
+			if(s.getStockName().equals(buyStock.getStockName())){
+				// 평단가 재설정.  (평단가*보유수량+현재가격*구매수량)/(보유수량+구매수량)
+				s.setAveragePrice((
+								s.getAveragePrice()*s.getStockCount()
+								+buyStock.getStockPrice() * num)
+								/ s.getStockCount() + num);
+				// 보유주식 수량에 수량 추가
+				s.setStockCount(s.getStockCount()+num);
+				// 현재 가격 * 구매 수량만큼 보유현금 차감
+				cashHoldings -= buyStock.getStockPrice() * num;
+				return;
+			}
+		}
+		// 같은 것이 없었다면 새로 추가.  유저주식 생성(구매주식이름, 구매주식수량, 구매주식의 현재가격을 평단가에 대입)
+		userStockList.add(new UserStock(buyStock.getStockName(),num,buyStock.getStockPrice()));
+		// 현재 가격 * 구매 수량만큼 보유현금 차감
+		cashHoldings -= buyStock.getStockPrice() * num;
+	}
 
 	@Override
 	public boolean equals(Object obj) {
