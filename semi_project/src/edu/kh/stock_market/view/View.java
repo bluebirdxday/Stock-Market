@@ -153,14 +153,15 @@ public class View {
 
 			int amOrPm = j % 2;
 
+			if (j != 1)
+				service.updatePrice(stocks);
+			
 			System.out.printf("\n\n %d년 %d월 %d일   %s", year, month, day, (amOrPm == 1 ? "오전" : "오후"));
 
 			for (int i = 0; i < users.size(); i++) {
 
-				if (j != 0 && i != 0)
-					service.updatePrice(stocks);
 				
-//				service.setProperty(user, stocks);
+//				service.setProperty(user, stocks);      
 				
 				disStocks();
 				user = users.get(i);
@@ -174,8 +175,7 @@ public class View {
 //				if (user.getStocks().size() != 0) {
 //
 //					System.out.println();
-//					System.out
-//							.println("   종목명              매입금액              주식수               현재금액               수익률");
+//					System.out.println("   종목명              평단              주식수               현재금액               수익률");
 //
 //					Iterator<Stock> iterator = user.getStocks().keySet().iterator();
 //
