@@ -144,11 +144,9 @@ public class Service {
 		}
 		
 		return foundStock;
-	
 		
 	}
 
-	
 	
 	
 }
