@@ -239,14 +239,48 @@ public class View {
 		}
 	}
 	
+	// 매수 페이지
 	public void buyView(User user) {
-		System.out.print("매수 종목 번호 입력 : ");
-		int input = sc.nextInt();
-		sc.nextLine();
-		Stock buyStock = stocks.get(input-1);
-		System.out.println(buyStock.getStockName() + "의 현재 가격은 "+ buyStock.getStockPrice()+"원 입니다.");
-		System.out.print("몇 주 구매하시겠습니까? ");
-		input = sc.nextInt();
+		int input=0;
+		Stock buyStock;
+
+		/* 예외상황.
+		 * 1. 숫자 외 입력
+		 * 2. 매수 종목 번호 범위 초과 
+		 * */
+		while(true) {
+			try {
+				System.out.print("매수 종목 번호 입력 : ");
+				input = sc.nextInt();
+				// 구매할 종목 정보 대입
+				buyStock = stocks.get(input-1);
+				break;
+			} catch (Exception e) {
+				System.out.println("잘못 입력하셨습니다.");
+				sc.nextLine();
+			}
+		}
+
+		/* 예외상황.
+		 * 1. 숫자 외 입력
+		 * 2. input*buyStock.getStockPrice()가 user.getCashHoldings()를 초과하는 경우   
+		 * */
+		while (true) {
+			try {
+				System.out.println(buyStock.getStockName() + "의 현재 가격은 " + buyStock.getStockPrice() + "원 입니다.");
+				System.out.print("몇 주 구매하시겠습니까? ");
+				input = sc.nextInt();
+				sc.nextLine();
+				if (input*buyStock.getStockPrice() > user.getCashHoldings()) {
+					System.out.println("보유 현금이 부족합니다.");
+					continue;
+				}
+				break;
+			} catch (Exception e) {
+				System.out.println("잘못 입력하셨습니다.");
+				sc.nextLine();
+			}
+		}
 		user.buyStock(buyStock,input);
 	}
 
