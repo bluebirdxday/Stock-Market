@@ -67,6 +67,7 @@ public class View {
 
 	// 거래소 입장
 	public void enterStockExchange() {
+		
 		registerUserInfo();
 		stocks = service.initStocks();
 		
@@ -228,23 +229,28 @@ public class View {
 				System.out.println();
 				break;
 			}
-			
+		
 			
 			finalBidder = service.auctionService(bidPriceMap);
 			System.out.println("---------------------------------");
 			
 		}
 
-		if(!bidPriceMap.isEmpty()) {
+		if(finalBidder!=null) {
 
 			System.out.println();
 			System.out.println("[ 최종 낙찰자 : " + finalBidder.getUserName() + "님 ]");
 			System.out.println(" 축하드립니다!");
 			System.out.println();
 			
+		}else {
+			
+			System.out.println("[낙찰자가 존재하지 않습니다!]");
+			System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
 		}
 		
 	}
+	
 
 	// 낙찰된 정보의 상세 내용
 	public void informationView() {
