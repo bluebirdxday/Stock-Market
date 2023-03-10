@@ -2,13 +2,11 @@ package edu.kh.stock_market.view;
 
 import java.time.LocalDate;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.InputMismatchException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.Set;
 
 import edu.kh.stock_market.dto.Stock;
 import edu.kh.stock_market.dto.User;
@@ -236,7 +234,7 @@ public class View {
 			System.out.println("---------------------------------");
 			
 		}
-	
+
 		if(!bidPriceMap.isEmpty()) {
 
 			System.out.println();
@@ -314,23 +312,42 @@ public class View {
 				System.out.print("실행할 메뉴를 선택하세요 ▶ ");
 				int input = sc.nextInt();
 
-				switch (input) {
-				case 1:
-					buyView(user);
-					break;
-				case 2:
-					sellView();
-					break;
-				case 3:
-					System.out.println("[ 아직 매수 / 매도가 가능합니다. 패스하시겠습니까? ]");
-					System.out.println("1. 패스        2. 돌아가기");
-					System.out.println();
-					System.out.print("실행할 메뉴를 선택하세요 ▶ ");
-					int input2 = sc.nextInt();
-					if (input2 == 1)
-						continue;
-				default:
-					System.out.println("[ 잘못 입력하셨습니다 ] ");
+				while (true) {
+				    switch (input) {
+				        case 1:
+				            buyView(user);
+				            break;
+				        case 2:
+				            sellView(user);
+				            break;
+				        case 3:
+				            System.out.println("[ 아직 매수 / 매도가 가능합니다. 패스하시겠습니까? ]");
+				            System.out.println("1. 패스        2. 돌아가기");
+				            System.out.println();
+				            System.out.print("실행할 메뉴를 선택하세요 ▶ ");
+				            int input2 = sc.nextInt();
+				            if (input2 == 1) {
+				                break;
+				            } else if (input2 == 2) {
+				                System.out.println("1. 매수");
+				                System.out.println("2. 매도");
+				                System.out.println("3. pass");
+				                System.out.println();
+				                System.out.print("실행할 메뉴를 선택하세요 ▶ ");
+				                input = sc.nextInt();
+				                continue;
+				            }
+				        default:
+				            System.out.println("[ 잘못 입력하셨습니다 ] ");
+				            System.out.println("1. 매수");
+				            System.out.println("2. 매도");
+				            System.out.println("3. pass");
+				            System.out.println();
+				            System.out.print("실행할 메뉴를 선택하세요 ▶ ");
+				            input = sc.nextInt();
+				            continue;
+				    }
+				    break;
 				}
 			}
 
@@ -344,24 +361,98 @@ public class View {
 	}
 	
 	public void buyView(User user) {
-		System.out.print("매수 종목 번호 입력 : ");
-		int input = sc.nextInt();
-		sc.nextLine();
-		Stock buyStock = stocks.get(input-1);
-		System.out.println(buyStock.getStockName() + "의 현재 가격은 "+ buyStock.getStockPrice()+"원 입니다.");
-		System.out.print("몇 주 구매하시겠습니까? ");
-		input = sc.nextInt();
+		
+		int input=0;
+		Stock buyStock;
+
+		/* 예외상황.
+		 * 1. 숫자 외 입력
+		 * 2. 매수 종목 번호 범위 초과 
+		 * */
+		while(true) {
+			try {
+				System.out.print("매수 종목 번호 입력 : ");
+				input = sc.nextInt();
+				// 구매할 종목 정보 대입
+				buyStock = stocks.get(input-1);
+				break;
+			} catch (Exception e) {
+				System.out.println("잘못 입력하셨습니다.");
+				sc.nextLine();
+			}
+		}
+
+		/* 예외상황.
+		 * 1. 숫자 외 입력
+		 * 2. input*buyStock.getStockPrice()가 user.getCashHoldings()를 초과하는 경우   
+		 * */
+		while (true) {
+			try {
+				System.out.println(buyStock.getStockName() + "의 현재 가격은 " + buyStock.getStockPrice() + "원 입니다.");
+				System.out.print("몇 주 구매하시겠습니까? ");
+				input = sc.nextInt();
+				sc.nextLine();
+				if (input*buyStock.getStockPrice() > user.getCashHoldings()) {
+					System.out.println("보유 현금이 부족합니다.");
+					continue;
+				}
+				break;
+			} catch (Exception e) {
+				System.out.println("잘못 입력하셨습니다.");
+				sc.nextLine();
+			}
+		}
 		user.buyStock(buyStock,input);
 	}
 
 	
 	
 	// 매도 페이지
-	public void sellView() {
+	public void sellView(User user) {
 
-		System.out.println("매도할 종목의 번호를 입력해주세요 ▶ ");
+		int input=0;
+		Stock sellStock;
 
-		System.out.println();
+		/* 예외상황.
+		 * 1. 숫자 외 입력
+		 * 2. 매도 종목 번호 범위 초과 
+		 * */
+		while(true) {
+			try {
+				System.out.print("매도 종목 번호 입력 : ");
+				input = sc.nextInt();
+				// 매도할 종목 정보 대입
+				sellStock = stocks.get(input-1);
+				break;
+			} catch (Exception e) {
+				System.out.println("잘못 입력하셨습니다.");
+				sc.nextLine();
+			}
+		}
+
+		/* 예외상황.
+		 * 1. 숫자 외 입력
+		 * 2. input이 user의 userStock 리스트 내 stock 개수를 초과하는 경우   
+		 * */
+		while (true) {
+			try {
+				System.out.println(sellStock.getStockName() + "의 현재 가격은 " + sellStock.getStockPrice() + "원 입니다.");
+				System.out.print("몇 주 판매하시겠습니까? ");
+				input = sc.nextInt();
+				sc.nextLine();
+				if (input > service.findStock(user, sellStock).getStockCount()) {
+					System.out.println("보유 현금이 부족합니다.");
+					continue;
+				}
+				break;
+			} catch (Exception e) {
+				System.out.println("잘못 입력하셨습니다.");
+				sc.nextLine();
+			}
+		}
+		
+		user.sellStock(sellStock,input, service.findStock(user, sellStock));
+		
 	}
 
 	// 이벤트 발생

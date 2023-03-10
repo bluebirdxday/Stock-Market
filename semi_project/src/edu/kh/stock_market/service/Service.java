@@ -129,6 +129,25 @@ public class Service {
 		
 	}
 
+	public UserStock findStock(User user, Stock stock) {
+		
+		List<UserStock> stockList = user.getUserStockList();
+		UserStock foundStock = null;
+		
+		for(int i=0; i<stockList.size(); i++) {
+			
+			if(stockList.get(i).getStockName().equals(stock.getStockName())) {
+				
+				foundStock = stockList.get(i);
+				break;
+			}
+		}
+		
+		return foundStock;
+		
+		
+	}
+
 	
 	
 	
