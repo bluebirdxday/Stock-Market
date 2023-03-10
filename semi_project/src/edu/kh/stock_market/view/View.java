@@ -71,7 +71,6 @@ public class View {
 	}
 
 	// 사용자 등록
-	// 사용자 등록
 	public void registerUserInfo() {
 
 		System.out.println("[ 사용자 등록 ]");
@@ -183,7 +182,7 @@ public class View {
 
 					System.out.println();
 					System.out.println("===========================================================");
-					System.out.println("   종목명              평단              주식수               현재금액               수익률");
+					System.out.println("종목명\t\t평단\t\t주식수\t\t현재금액\t\t수익률");
 					System.out.println("===========================================================");
 
 					
@@ -192,15 +191,14 @@ public class View {
 					while(iterator.hasNext()) {
 						UserStock userStock = iterator.next();
 						
-						
-						System.out.printf("   %s                  %d                    \n", userStock.getStockName(), userStock.getStockCount());
-						
+						String stockName = userStock.getStockName();
+						if(!userStock.getStockName().equals("삼성바이오로직스")) stockName+="\t";
+						System.out.printf("%s\t%d\t\t%d\n", stockName, userStock.getAveragePrice(),userStock.getStockCount());
 					}
 
 
 					System.out.println("===========================================================");
 				}
-				
 
 				System.out.println();
 				System.out.println("1. 매수");
@@ -240,81 +238,94 @@ public class View {
 	}
 
 	// 매수 페이지
-	public void buyView(User user, List<UserStock> userStocks) {
-
-		System.out.print("매수할 종목의 번호를 입력해주세요 ▶ ");
-
-		int buyStockNum = sc.nextInt();
+	public void buyView(User user) {
+		System.out.print("매수 종목 번호 입력 : ");
+		int input = sc.nextInt();
 		sc.nextLine();
-
-		System.out.println();
-		System.out.println();
-
-		Stock chosenStock = stocks.get(buyStockNum - 1);
-
-		System.out.println(chosenStock.getStockName());
-
-		for (int i = 1; i <= 10; i++) {
-			System.out.printf("%d주 가격 : %d\n", i, i * chosenStock.getStockPrice());
-		}
-
-		while (true) {
-
-			System.out.println();
-			System.out.print("매수할 주식 수  ▶ ");
-
-			try {
-
-				buyStockNum = sc.nextInt();
-				sc.nextLine();
-
-				if (buyStockNum == 0) {
-					System.out.println("입력할 수 없는 값입니다. 다음 턴으로 넘어갑니다.");
-					break;
-				}
-
-			} catch (Exception e) {
-
-				System.out.println("[warning]" + e.getClass().getName() + " : " + e.getMessage());
-
-			}
-
-			// if(chosenStock 가격 > 유저 보유 현금 ) 현금 부족, 다시 입력
-			// else 구매 완료 service.userBuyStock 만들기 => user의 주식arrayList에 매수한 주식 정보 추가
-
-			if (user.getCashHoldings() < chosenStock.getStockPrice() * buyStockNum)
-				System.out.println("현금이 부족합니다. 다시 입력해주세요.");
-			else {
-
-
-				userStocks = service.addStock(userStocks, chosenStock, buyStockNum);
-
-				int totalPrice = chosenStock.getStockPrice() * buyStockNum; // 매수 종목 가격 * 매수 주식 수
-
-				user.updateProperty(totalPrice); // 총 자산과 보유 현금 정보 업데이트
-
-				System.out.println();
-				System.out.println("[매수가 완료되었습니다.]");
-				System.out.println("매입 금액 : " + totalPrice);
-				
-				
-				int index = -1;
-
-				for(int i=0; i<userStocks.size(); i++) {
-					
-					if(userStocks.get(i).getStockName().equals(chosenStock.getStockName()))
-						index = i;
-				}
-
-				System.out.println(chosenStock.getStockName() + " 보유 주식 수 : " + userStocks.get(index).getStockCount());
-				// ?? 사용자가 기존에 보유한 주식 수 + 매수한 주식 수 인지 || 사용자가 방금 매수한 주식 수만 말하는 건지 ?? -- 일단 전자로 함
-				
-				break;
-			}
-
-		}
-
+		Stock buyStock = stocks.get(input-1);
+		System.out.println(buyStock.getStockName() + "의 현재 가격은 "+ buyStock.getStockPrice()+"원 입니다.");
+		System.out.print("몇 주 구매하시겠습니까? ");
+		input = sc.nextInt();
+		user.buyStock(buyStock,input);
 	}
+	
+	
+	// 매수 페이지
+//	public void buyView(User user, List<UserStock> userStocks) {
+//
+//		System.out.print("매수할 종목의 번호를 입력해주세요 ▶ ");
+//
+//		int buyStockNum = sc.nextInt();
+//		sc.nextLine();
+//
+//		System.out.println();
+//		System.out.println();
+//
+//		Stock chosenStock = stocks.get(buyStockNum - 1);
+//
+//		System.out.println(chosenStock.getStockName());
+//
+//		for (int i = 1; i <= 10; i++) {
+//			System.out.printf("%d주 가격 : %d\n", i, i * chosenStock.getStockPrice());
+//		}
+//
+//		while (true) {
+//
+//			System.out.println();
+//			System.out.print("매수할 주식 수  ▶ ");
+//
+//			try {
+//
+//				buyStockNum = sc.nextInt();
+//				sc.nextLine();
+//
+//				if (buyStockNum == 0) {
+//					System.out.println("입력할 수 없는 값입니다. 다음 턴으로 넘어갑니다.");
+//					break;
+//				}
+//
+//			} catch (Exception e) {
+//
+//				System.out.println("[warning]" + e.getClass().getName() + " : " + e.getMessage());
+//
+//			}
+//
+//			// if(chosenStock 가격 > 유저 보유 현금 ) 현금 부족, 다시 입력
+//			// else 구매 완료 service.userBuyStock 만들기 => user의 주식arrayList에 매수한 주식 정보 추가
+//
+//			if (user.getCashHoldings() < chosenStock.getStockPrice() * buyStockNum)
+//				System.out.println("현금이 부족합니다. 다시 입력해주세요.");
+//			else {
+//
+//
+//				userStocks = service.addStock(userStocks, chosenStock, buyStockNum);
+//
+//				int totalPrice = chosenStock.getStockPrice() * buyStockNum; // 매수 종목 가격 * 매수 주식 수
+//
+//				user.updateProperty(totalPrice); // 총 자산과 보유 현금 정보 업데이트
+//
+//				System.out.println();
+//				System.out.println("[매수가 완료되었습니다.]");
+//				System.out.println("매입 금액 : " + totalPrice);
+//				
+//				
+//				int index = -1;
+//
+//				for(int i=0; i<userStocks.size(); i++) {
+//					
+//					if(userStocks.get(i).getStockName().equals(chosenStock.getStockName()))
+//						index = i;
+//				}
+//
+//				System.out.println(chosenStock.getStockName() + " 보유 주식 수 : " + userStocks.get(index).getStockCount());
+//				// ?? 사용자가 기존에 보유한 주식 수 + 매수한 주식 수 인지 || 사용자가 방금 매수한 주식 수만 말하는 건지 ?? -- 일단 전자로 함
+//				
+//				break;
+//			}
+//
+//		}
+//
+//	}
 
 	
 	// 매도 페이지
