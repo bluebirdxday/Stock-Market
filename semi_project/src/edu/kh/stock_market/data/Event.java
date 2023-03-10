@@ -1,6 +1,7 @@
 package edu.kh.stock_market.data;
 
 import java.util.List;
+
 import edu.kh.stock_market.dto.Stock;
 
 public class Event {

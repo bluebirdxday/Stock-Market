@@ -3,7 +3,7 @@ package edu.kh.stock_market.dto;
 public class UserStock {
 	
 	private String stockName; // 종목명
-	private int stockCount;   // 보유 주식 수
+	private int stockCount=0;   // 보유 주식 수
 	private int stockMarketValue;  // 보유 주식 평가 금액
 	private int averagePrice; // 평균단가
 
@@ -18,7 +18,7 @@ public class UserStock {
 	public String getStockName() {
 		return stockName;
 	}
-
+	
 
 	public void setStockName(String stockName) {
 		this.stockName = stockName;
