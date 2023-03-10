@@ -12,6 +12,8 @@ import edu.kh.stock_market.dto.Stock;
 import edu.kh.stock_market.dto.User;
 import edu.kh.stock_market.dto.UserStock;
 import edu.kh.stock_market.service.Service;
+import java.util.Random;
+import edu.kh.stock_market.data.Information;
 
 public class View {
 	private Scanner sc;
@@ -19,11 +21,15 @@ public class View {
 	private List<User> users;
 	private List<Stock> stocks;
 	private List<UserStock> userStocks;
+	private List<Information> infos; // 정보 배열
+
 
 	LocalDate now = LocalDate.now(); // 현재 날짜 구하기
 	int year = now.getYear();
 	int month = now.getMonthValue();
 	int day = now.getDayOfMonth();
+	
+	Random random = new Random();
 
 	public View() {
 		sc = new Scanner(System.in);
@@ -70,6 +76,8 @@ public class View {
 		registerUserInfo();
 		stocks = service.initStocks();
 		
+		infos = service.initInfos(); // 서비스에서 정보 생성 초기화
+		
 		if((int)(Math.random()*2) == 0) {	
 			informationAuction();   // 랜덤으로 나타나게 하기
 		}
@@ -77,7 +85,6 @@ public class View {
 		userInfoAndSelectStockOption();
 	}
 
-	// 사용자 등록
 	// 사용자 등록
 	public void registerUserInfo() {
 
@@ -90,10 +97,8 @@ public class View {
 			users = service.registerUserService(sc.next());
 		}
 		System.out.println();
-		
-		
 	}
-
+	
 	// 주식정보 출력
 	public void disStocks() {
 		System.out.println("\n---------- 주식 정보 ----------");
@@ -102,6 +107,18 @@ public class View {
 			System.out.println(stocks.get(i).getStockInfo());
 		}
 	}
+
+	// 입찰 정보 출력
+			public void InformaionView() {
+				System.out.println("★★★★★축하드립니다! 낙찰되셨습니다.★★★★★\n");
+				int randomInfo = 0;
+
+				if(infos.size()!=0) {
+				randomInfo = random.nextInt(infos.size()); // 10 -> 0~9 범위
+				System.out.println(infos.get(randomInfo).toString());
+				infos.remove(randomInfo);}
+
+			}
 
 	// 현재 유저정보 출력
 	public void disUsers() {

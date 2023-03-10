@@ -116,9 +116,6 @@ public class User {
 		}
 	
 	}
-	
-	
-	
 
 
 	@Override
