@@ -441,7 +441,7 @@ public class View {
 				input = sc.nextInt();
 				sc.nextLine();
 				if (input > service.findStock(user, sellStock).getStockCount()) {
-					System.out.println("보유 현금이 부족합니다.");
+					System.out.println("입력하신 값보다 보유하고 있는 주식 수가 부족합니다.");
 					continue;
 				}
 				break;
