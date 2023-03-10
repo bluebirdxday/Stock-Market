@@ -2,6 +2,8 @@ package edu.kh.stock_market.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import edu.kh.stock_market.dto.Stock;
 import edu.kh.stock_market.dto.User;
@@ -95,30 +97,39 @@ public class Service {
 	}
 	
 	
-//	public List<UserStock> addStock(List<UserStock> userStocks, Stock chosenStock, int buyStockNum) {
-//
-//		if(userStocks.isEmpty()) {  // 사용자 종목 리스트가 비어있다면 새로 생성해서 추가
-//			UserStock userStock = new UserStock(chosenStock.getStockName(), buyStockNum);
-//			userStocks.add(userStock);
-//		}else{
-//			
-//			
-//			for(int i=0; i<userStocks.size(); i++) {
-//				
-//				if(userStocks.get(i).getStockName().equals(chosenStock.getStockName()))  // 매수한 주식종목명과 사용자 종목리스트 내 종목명이 일치하면 주식수만 변경
-//					userStocks.get(i).setStockCount(buyStockNum); 
-//				else {
-//					UserStock userStock2 = new UserStock(chosenStock.getStockName(), buyStockNum);   // 일치하는 게 없으면 추가
-//					userStocks.add(userStock2);
-//				}
-//				
-//			}
-//			
-//		}
-//		
-//		return userStocks;
-//	
-//	}
+	/** 정보 입찰 경매
+	 * 입찰가 비교해서 최고 금액 낙찰
+	 * @param map<사용자 객체, 입찰가>
+	 * @return 최고 입찰가 사용자 이름 or 최고 입찰 금액이 여러명 존재할 경우 랜덤으로 사용자 하나 선택
+	 */
+	public User auctionService(Map<User, Integer> map) {
+	
+	
+		Entry<User, Integer> maxEntry = null;
+		ArrayList<User> arrayList = new ArrayList<>();
+		int count = 0; // 중복 체크 값
+		
+		
+		for(Map.Entry<User, Integer> entry : map.entrySet()) {
+				
+			if(maxEntry==null || entry.getValue() > maxEntry.getValue()) {
+				maxEntry = entry;
+			}else if(entry.getValue() == maxEntry.getValue()) {
+				arrayList.add(entry.getKey());
+				count++;
+			}
+
+		}
+		
+		if(arrayList.isEmpty()) {
+			return maxEntry.getKey();
+		}else {
+			return arrayList.get((int)Math.random()*count);			
+		}
+		
+	}
+
+	
 	
 	
 }
