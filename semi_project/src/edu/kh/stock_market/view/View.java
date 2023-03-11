@@ -203,8 +203,30 @@ public class View {
 				
 				System.out.print("평가손익 : ");
 				if(user.getProperty()-User.cash>0)
-					System.out.print("+");
+					System.out.print("+ ");
 				System.out.println((user.getProperty()-User.cash) + "원");
+				
+				
+				int totalAveragePrice=0; // 평단의 합
+				for(UserStock userStock : userStocks) {
+					totalAveragePrice += userStock.getAveragePrice()*userStock.getStockCount();
+				}
+				
+				
+				double totalReturn;
+				
+				System.out.print("총 수익률 : ");
+				
+				if(totalAveragePrice==0)
+					totalReturn = 0;
+				else {
+					totalReturn = (user.getProperty()-User.cash)/(double)totalAveragePrice;
+				}
+					
+				if(totalReturn>0.0)
+					System.out.print("+ ");
+				
+				System.out.printf("%.2f%%\n", totalReturn);
 
 			
 				if (userStocks.size() != 0) {
@@ -216,9 +238,9 @@ public class View {
 
 					
 					Iterator<UserStock> iterator = userStocks.iterator();
-					int currentStockPrcie;  // 현재주가
-					int purchaseAmount;  // 매입금액
-					int gainsAndlosses; // 평가손익
+					int currentStockPrcie=0;  // 현재주가
+					int purchaseAmount=0;  // 매입금액
+					int gainsAndlosses=0; // 평가손익
 					
 					while(iterator.hasNext()) {
 						UserStock userStock = iterator.next();
@@ -240,7 +262,7 @@ public class View {
 						
 						if((double)gainsAndlosses/userStock.getAveragePrice()>0.0)
 							System.out.print("+");
-						System.out.printf("%.2f%%\n" , (double)gainsAndlosses/userStock.getAveragePrice()); // 손익/평단(=투자원금)
+						System.out.printf("%.2f%%\n" , (double)gainsAndlosses/purchaseAmount); // 손익/매입금액(=투자원금)
 						
 						
 					}
@@ -328,9 +350,7 @@ public class View {
 		int bidPrice = 1000; // 입찰가
 		int quotePrice=0;  // 회원 제시가
 		User finalBidder = null;   // 최종 낙찰자
-		
-		Scanner sc = new Scanner(System.in);
-		
+				
 		
 		Map<User, Integer> bidPriceMap = new HashMap<>(); // 입찰가 Map(key : userName, value : bidPrice)
 		
