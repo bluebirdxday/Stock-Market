@@ -187,7 +187,7 @@ public class Service {
 	
 	public void applyIncDecRateToStock(List<Stock> stocks, List<Map<Stock, Integer>> incDecList) {
 		
-		Map<Stock, Integer> newIncPrice = incDecList.get(0);  
+		Map<Stock, Integer> newIncPrice = incDecList.get(0);
 		Map<Stock, Integer> newDecPrice = incDecList.get(1);
 		
 		for(Stock stock : stocks) {
@@ -250,37 +250,37 @@ public class Service {
 	}
 	
 	
-	/** 정보 입찰 경매
-	 * 입찰가 비교해서 최고 금액 낙찰
-	 * @param map<사용자 객체, 입찰가>
-	 * @return 최고 입찰가 사용자 이름 or 최고 입찰 금액이 여러명 존재할 경우 랜덤으로 사용자 하나 선택
-	 */
-	public User auctionService(Map<User, Integer> map) {
-	
-	
-		Entry<User, Integer> maxEntry = null;
-		ArrayList<User> arrayList = new ArrayList<>();
-		int count = 0; // 중복 체크 값
-		
-		
-		for(Map.Entry<User, Integer> entry : map.entrySet()) {
-				
-			if(maxEntry==null || entry.getValue() > maxEntry.getValue()) {
-				maxEntry = entry;
-			}else if(entry.getValue() == maxEntry.getValue()) {
-				arrayList.add(entry.getKey());
-				count++;
-			}
-
-		}
-		
-		if(arrayList.isEmpty()) {
-			return maxEntry.getKey();
-		}else {
-			return arrayList.get((int)Math.random()*count);			
-		}
-		
-	}
+//	/** 정보 입찰 경매
+//	 * 입찰가 비교해서 최고 금액 낙찰
+//	 * @param map<사용자 객체, 입찰가>
+//	 * @return 최고 입찰가 사용자 이름 or 최고 입찰 금액이 여러명 존재할 경우 랜덤으로 사용자 하나 선택
+//	 */
+//	public User auctionService(Map<User, Integer> map) {
+//	
+//	
+//		Entry<User, Integer> maxEntry = null;
+//		ArrayList<User> arrayList = new ArrayList<>();
+//		int count = 0; // 중복 체크 값
+//		
+//		
+//		for(Map.Entry<User, Integer> entry : map.entrySet()) {
+//				
+//			if(maxEntry==null || entry.getValue() > maxEntry.getValue()) {
+//				maxEntry = entry;
+//			}else if(entry.getValue() == maxEntry.getValue()) {
+//				arrayList.add(entry.getKey());
+//				count++;
+//			}
+//
+//		}
+//		
+//		if(arrayList.isEmpty()) {
+//			return maxEntry.getKey();
+//		}else {
+//			return arrayList.get((int)Math.random()*count);			
+//		}
+//		
+//	}
 
 	
 	public UserStock findStock(User user, Stock stock) {

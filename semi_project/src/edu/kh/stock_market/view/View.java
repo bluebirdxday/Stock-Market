@@ -213,30 +213,41 @@ public class View {
 				System.out.println();
 				System.out.println("-----------------------------------");
 				System.out.println("[ " + user.getUserName() + "님의 자산 ]");
-				System.out.println("총 평가 금액  : " + user.getProperty() + "원");
-				System.out.println("현금 : " + user.getCashHoldings() + "원");
+				System.out.println("총 자산  : " + user.getProperty() + "원");
+				System.out.println("현   금 : " + user.getCashHoldings() + "원");
 				
+					
 				
-				System.out.print("평가손익 : ");
-				if(user.getProperty()-User.cash>0)
-					System.out.print("+ ");
-				System.out.println((user.getProperty()-User.cash) + "원");
-				
-				
+				Iterator<UserStock> ir = userStocks.iterator();
+				int currentTotalStockPrcie=0;
+				int purchaseTotalAmount=0;
+				int totalGainsAndlosses=0;
 				int totalAveragePrice=0; // 평단의 합
-				for(UserStock userStock : userStocks) {
-					totalAveragePrice += userStock.getAveragePrice()*userStock.getStockCount();
+				
+				while(ir.hasNext()) {
+					UserStock userStock = ir.next();
+										
+					currentTotalStockPrcie += service.findUserStock(user, userStock, stocks).getStockPrice()*userStock.getStockCount();  // 현재주가
+					purchaseTotalAmount += userStock.getAveragePrice()*userStock.getStockCount(); // 매입금액
+					totalGainsAndlosses += currentTotalStockPrcie-purchaseTotalAmount; // 평가손익
+					totalAveragePrice += userStock.getAveragePrice()*userStock.getStockCount(); // 평단의 합
 				}
 				
+				System.out.print("평가손익 : ");
+				if(totalGainsAndlosses>0)
+					System.out.print("+ ");
+				System.out.println(totalGainsAndlosses + "원");
 				
-				double totalReturn;
+	
+				
+				double totalReturn;  // 총 수익률
 				
 				System.out.print("총 수익률 : ");
 				
 				if(totalAveragePrice==0)
 					totalReturn = 0;
 				else {
-					totalReturn = (user.getProperty()-User.cash)/(double)totalAveragePrice;
+					totalReturn = (double)totalGainsAndlosses/totalAveragePrice*100;
 				}
 					
 				if(totalReturn>0.0)
@@ -263,6 +274,9 @@ public class View {
 						
 						String stockName = userStock.getStockName();
 						
+						//현재의주가 *보유수를 분모로 두고 현재주가 * 보유수 - 당시주가* 보유수를 빼고 이를 100으로 곱하면 수익이 나오죠 
+						// 
+						
 						currentStockPrcie = service.findUserStock(user, userStock, stocks).getStockPrice()*userStock.getStockCount();  // 현재주가
 						purchaseAmount = userStock.getAveragePrice()*userStock.getStockCount(); // 매입금액
 						gainsAndlosses = currentStockPrcie-purchaseAmount; // 평가손익
@@ -276,9 +290,9 @@ public class View {
 						System.out.print(gainsAndlosses + "\t\t");
 						// 평가 손익 = 현재주가 - 매입금액
 						
-						if((double)gainsAndlosses/userStock.getAveragePrice()>0.0)
+						if((double)purchaseAmount/gainsAndlosses>0.0)
 							System.out.print("+");
-						System.out.printf("%.2f%%\n" , (double)gainsAndlosses/purchaseAmount); // 손익/매입금액(=투자원금)
+						System.out.printf("%.2f%%\n" , (double)gainsAndlosses/purchaseAmount*100); // 수익률 = 매입금액(=투자원금)/손익*100
 						
 						
 					}
@@ -371,7 +385,7 @@ public class View {
 		User finalBidder = null;   // 최종 낙찰자
 				
 		
-		Map<User, Integer> bidPriceMap = new HashMap<>(); // 입찰가 Map(key : userName, value : bidPrice)
+//		Map<User, Integer> bidPriceMap = new HashMap<>(); // 입찰가 Map(key : userName, value : bidPrice)
 		
 		System.out.println();
 		System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
@@ -405,12 +419,14 @@ public class View {
 							break;
 						}
 						
-				     	else if(quotePrice<bidPrice) System.out.println("[X] 더 높은 금액을 제시해주세요 [X]"); // 회원 제시가 < 초기 입찰가
+				     	else if(quotePrice<bidPrice) System.out.println("[X] 더 높은 금액을 제시해주세요 [X]"); // 회원 제시가 < 현재 입찰가
 						
 						else if(quotePrice>MAX_BIDPRICE) System.out.println("[X] 입찰 가능한 금액을 초과합니다 [X]");  // 회원 제시가 > 최대 금액
 
 						else {
-							bidPriceMap.put(users.get(k), quotePrice);
+							bidPrice = quotePrice;
+							//bidPriceMap.put(users.get(k), quotePrice);
+							finalBidder = users.get(k);
 							break;
 						}
 						
@@ -429,30 +445,54 @@ public class View {
 				
 			}
 			
-			
-		
-			if(bidPriceMap.isEmpty()) {
+			if(bidPrice==1000) {
+				System.out.println("");
 				System.out.println("낙찰자가 존재하지 않습니다!");
 				System.out.println();
 				break;
-				
-			}else {
-				
-				finalBidder = service.auctionService(bidPriceMap);
-				System.out.println("---------------------------------");
 			}
+			
+			
+			System.out.println("---------------------------------");
+			
+		
+//			if(bidPriceMap.isEmpty()) {
+//				System.out.println("낙찰자가 존재하지 않습니다!");
+//				System.out.println();
+//				break;
+//				
+//			}else {
+//				
+//				finalBidder = service.auctionService(bidPriceMap);
+//				System.out.println("---------------------------------");
+//			}
 		
 			
 		}
 
+//		if(finalBidder!=null) {
+//
+//			System.out.println();
+//			System.out.println("[ 최종 낙찰자 : " + finalBidder.getUserName() + "님 ]");
+//			System.out.println(" 축하드립니다!");
+//			System.out.println();
+//			
+//			finalBidder.setCashHoldings(finalBidder.getCashHoldings()-quotePrice);
+//			
+//		}
+		
+			
 		if(finalBidder!=null) {
-
+		
 			System.out.println();
 			System.out.println("[ 최종 낙찰자 : " + finalBidder.getUserName() + "님 ]");
-			System.out.println(" 축하드립니다!");
+			System.out.printf(" %d원에 낙찰되었습니다. 축하드립니다!" , bidPrice);
 			System.out.println();
 			
+			finalBidder.setCashHoldings(finalBidder.getCashHoldings()-bidPrice);
+			
 		}
+		
 		
 		return finalBidder;
 		
@@ -462,7 +502,7 @@ public class View {
 
 	// 낙찰된 정보 상세 내역
 	public void InformaionView(User user) {
-		System.out.printf("★★★★★ %s님 입찰 정보 상세 내역 ★★★★★\n", user.getUserName());
+		System.out.printf("\n\n\n★★★★★ %s님 입찰 정보 상세 내역 ★★★★★\n", user.getUserName());
 		int randomInfo = 0;
 		Information information = null;
 		String[] increaseList = null;
