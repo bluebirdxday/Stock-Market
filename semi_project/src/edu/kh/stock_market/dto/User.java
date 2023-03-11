@@ -56,8 +56,6 @@ public class User {
 
 	// 총 자산 업데이트 (주식 가격 변동 시)
 	public void updateProperty(int totalPrice) {
-//		cashHoldings -= totalPrice; 
-//		property = cashHoldings + totalPrice; 
 		property = cashHoldings + totalPrice;  // 총 자산  = 현금 보유량 + 총 주식 평가 가격
 	}
 	

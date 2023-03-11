@@ -1,6 +1,7 @@
 package edu.kh.stock_market.view;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Iterator;
@@ -22,11 +23,14 @@ public class View {
 	private List<Stock> stocks;
 	private List<UserStock> userStocks;
 	private List<Information> infos; // 정보 배열
+	List<Map<Stock, Integer>> incDecList = new ArrayList<Map<Stock, Integer>>(); // 정보 경매 상승,하락 종목들
 
 	LocalDate now = LocalDate.now(); // 현재 날짜 구하기
 	int year = now.getYear();
 	int month = now.getMonthValue();
 	int day = now.getDayOfMonth();
+	
+	int nextDay = 0;  // 정보 경매 등락률 다음 오전/오후 타임에 적용
 	
 	Random random = new Random();
 
@@ -112,7 +116,6 @@ public class View {
 	// 규칙 설명
 	public void ruleView() {
 
-		Scanner scan = new Scanner(System.in);
 		char backInput;
 
 		System.out.println();
@@ -134,7 +137,7 @@ public class View {
 		while (true) {
 
 			System.out.print("뒤로가기 [B] ▶ ");
-			backInput = scan.nextLine().toUpperCase().charAt(0);
+			backInput = sc.nextLine().toUpperCase().charAt(0);
 
 			if (backInput == 'B')
 				break;
@@ -153,6 +156,7 @@ public class View {
 		System.out.println();
 		System.out.println();
 		User user = null;
+		User finalBidder=null;
 		
 
 		for (int j = 1; j <= 20; j++) {
@@ -161,13 +165,25 @@ public class View {
 			
 			
 			if((int)(Math.random()*2) == 0)
-				informationAuction();
+				finalBidder = informationAuction();
 			
 			
 			if (j != 1)
 				service.updatePrice(stocks); 
 			
+			
+			if(finalBidder!=null) {
+				
+				InformaionView(finalBidder);
+				finalBidder=null;
+			}
+				
 
+			
+			if(day==nextDay) {
+				service.applyIncDecRateToStock(stocks, incDecList);
+			}
+			
 				
 			for (int i=0; i < users.size(); i++) {
 				
@@ -325,6 +341,8 @@ public class View {
 				
 			}
 			
+			nextDay = day + 1;
+			
 
 			if(amOrPm!=1) {
 	
@@ -336,6 +354,7 @@ public class View {
 				}
 				
 			}
+			
 		}
 	}
 	
@@ -344,7 +363,7 @@ public class View {
 	/** 정보 경매
 	 * 
 	 */
-	public void informationAuction() {
+	public User informationAuction() {
 		
 		final int MAX_BIDPRICE = 50000;  // 최대 금액
 		int bidPrice = 1000; // 입찰가
@@ -433,24 +452,36 @@ public class View {
 			System.out.println(" 축하드립니다!");
 			System.out.println();
 			
-			InformaionView();
-			
 		}
+		
+		return finalBidder;
 		
 	}
 	
 	
 
 	// 낙찰된 정보 상세 내역
-	public void InformaionView() {
-		System.out.println("★★★★★ 입찰 정보 상세 내역 ★★★★★\n");
+	public void InformaionView(User user) {
+		System.out.printf("★★★★★ %s님 입찰 정보 상세 내역 ★★★★★\n", user.getUserName());
 		int randomInfo = 0;
+		Information information = null;
+		String[] increaseList = null;
+		String[] decreaseList = null;
 
 		if(infos.size()!=0) {
 		randomInfo = random.nextInt(infos.size()); // 10 -> 0~9 범위
-		System.out.println(infos.get(randomInfo).toString());
-		infos.remove(randomInfo);}
+		information = infos.get(randomInfo);
+		System.out.println(information.toString());
+		infos.remove(randomInfo);
+		}
 
+		
+		increaseList = information.getIncrease().clone(); // 상승 종목 리스트 가져오기
+		decreaseList = information.getDecrease().clone(); // 하락 종목 리스트 가져오기
+		
+		incDecList = service.updateInfomationPrice(stocks, information, increaseList, decreaseList);
+			
+		
 	}
 	
 	
@@ -519,26 +550,6 @@ public class View {
 		 * 1. 숫자 외 입력
 		 * 2. 매도 종목 번호 범위 초과 
 		 * */
-		
-//		if (userStocks.size() != 0) {
-//			
-//			System.out.println();
-//			System.out.println("===========================================================");
-//			System.out.println("번호\t\t종목명\t\t평단\t\t주식수\t\t현재금액\t\t수익률");
-//			System.out.println("===========================================================");
-//			
-//			
-//			for(int i=0; i<userStocks.size(); i++) {
-//				
-//				String stockName = userStocks.get(i).getStockName();
-//				if(!stockName.equals("삼성바이오로직스")) stockName+="\t";
-//				System.out.printf("[%d]\t%s\t%d\t\t%d\n", i+1, stockName, userStocks.get(i).getAveragePrice(),
-//						userStocks.get(i).getStockCount());
-//			}
-//			
-//			
-//			System.out.println("===========================================================");
-//		}
 	
 		
 		

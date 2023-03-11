@@ -8,7 +8,7 @@ public class Stock {
 	private int updatePrice;
 	private int prevPrice;
 	private int stockRemain;  // 남은 주식 수 
-	private double stockIncDec;	// 등락률
+	private double stockIncDec=0;	// 등락률
 
 
 	public Stock() {
@@ -67,6 +67,7 @@ public class Stock {
 	public double getStockIncDec() {
 		return stockIncDec;
 	}
+	
 
 	public void setStockIncDec(double stockIncDec) {
 		this.stockIncDec = stockIncDec;

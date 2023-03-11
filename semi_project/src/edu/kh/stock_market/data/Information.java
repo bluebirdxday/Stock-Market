@@ -4,12 +4,9 @@ import java.util.ArrayList;
 
 public class Information {
 
-	private ArrayList<String> infoDescription;	// 정보 설명
-	// private ArrayList<String> infoDescription; // 일단 안써서 주석 처리 했어요! 삭제해도 되면 합시다!
-
 	private String eventName; // 정보 발생 문자열
-	private String[] increase; // 상승 종목 배열
-	private String[] decrease; // 하락 종목 배열
+	private String[] increase = null; // 상승 종목 배열
+	private String[] decrease = null; // 하락 종목 배열
 
 	public Information() {
 
@@ -23,7 +20,34 @@ public class Information {
 
 	@Override
 	public String toString() {
-		return eventName + "이/가 발생하였습니다.";
+		return eventName;
 	}
+
+
+	public String getEventName() {
+		return eventName;
+	}
+
+	public void setEventName(String eventName) {
+		this.eventName = eventName;
+	}
+
+	public String[] getIncrease() {
+		return increase;
+	}
+
+	public void setIncrease(String[] increase) {
+		this.increase = increase;
+	}
+
+	public String[] getDecrease() {
+		return decrease;
+	}
+
+	public void setDecrease(String[] decrease) {
+		this.decrease = decrease;
+	}
+	
+	
 
 }
