@@ -5,7 +5,8 @@ import java.util.List;
 
 
 public class User {
-	private int cash = 100000; // 시작시 현금
+	
+	public static final int cash = 100000; // 시작시 현금
 	private String userName; // 유저 이름
 	private int cashHoldings; // 보유 현금
 	private List<UserStock> userStockList; // 보유 종목

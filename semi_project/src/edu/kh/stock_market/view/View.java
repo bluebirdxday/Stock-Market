@@ -155,7 +155,7 @@ public class View {
 		User user = null;
 		
 
-		for (int j = 1; j <= 10; j++) {
+		for (int j = 1; j <= 20; j++) {
 
 			int amOrPm = j % 2;
 			
@@ -167,11 +167,11 @@ public class View {
 			if (j != 1)
 				service.updatePrice(stocks); 
 			
-			System.out.printf("\n\n %d년 %d월 %d일   %s", year, month, day, (amOrPm == 1 ? "오전" : "오후"));
 
 				
 			for (int i=0; i < users.size(); i++) {
 				
+				System.out.printf("\n\n %d년 %d월 %d일   %s", year, month, day, (amOrPm == 1 ? "오전" : "오후"));
 			
 				disStocks();
 				user = users.get(i);
@@ -189,9 +189,7 @@ public class View {
 					} // 주식 평가 가격  = 주식 평가 가격 + 사용자 보유 주식 개수 * 주식 종목 현재 가격
 				}
 				
-				
-				int difference = totalPrice - (user.getProperty() - user.getCashHoldings());  // 어제 자산과 오늘 자산 비교해서 등락률 계산 (근데 여기서 구현하면 하루기준 x, 오전/오후마다 바뀌게 됨)
-				
+							
 				
 				user.updateProperty(totalPrice);  
 				
@@ -201,17 +199,19 @@ public class View {
 				System.out.println("[ " + user.getUserName() + "님의 자산 ]");
 				System.out.println("총 평가 금액  : " + user.getProperty() + "원");
 				System.out.println("현금 : " + user.getCashHoldings() + "원");
-				System.out.print("전일 대비 ");
-				if(difference>0) System.out.print(" + ");
-				System.out.println(difference + "원");
 				
+				
+				System.out.print("평가손익 : ");
+				if(user.getProperty()-User.cash>0)
+					System.out.print("+");
+				System.out.println((user.getProperty()-User.cash) + "원");
 
 			
 				if (userStocks.size() != 0) {
 
 					System.out.println();
 					System.out.println("================================================================================");
-					System.out.println("종목명\t\t평단\t\t보유수량\t\t매입금액\t\t평가금액\t\t평가손익\t\t수익률");
+					System.out.println("종목명\t\t평단\t\t보유수량\t\t매입금액\t\t현재주가\t\t평가손익\t\t수익률");
 					System.out.println("================================================================================");
 
 					
@@ -222,8 +222,8 @@ public class View {
 						
 						String stockName = userStock.getStockName();
 						if(!userStock.getStockName().equals("삼성바이오로직스")) stockName+="\t";
-						System.out.printf("%s\t%d\t\t%d\t\t%d\t\t%d\t\n", stockName, userStock.getAveragePrice(), userStock.getStockCount(), userStock.getAveragePrice()*userStock.getStockCount(),
-								
+						System.out.printf("%s\t%d\t\t%d\t\t%d\t\t%d\t\n", stockName, userStock.getAveragePrice(), 
+								userStock.getStockCount(), userStock.getAveragePrice()*userStock.getStockCount(),
 								service.findUserStock(user, userStock, stocks).getStockPrice()*userStock.getStockCount());
 					}
 
@@ -286,11 +286,15 @@ public class View {
 			}
 			
 
-			if (service.calcDay(month, day)) {
-				day++;
-			} else {
-				month++;
-				day = 1;
+			if(amOrPm!=1) {
+	
+				if (service.calcDay(month, day)) {
+					day++;
+				} else {
+					month++;
+					day = 1;
+				}
+				
 			}
 		}
 	}
@@ -554,7 +558,7 @@ public class View {
 			}
 		}
 		
-		user.sellStock(sellStock,input, service.findStock(user, sellStock));
+		user.sellStock(sellStock, input, service.findStock(user, sellStock));
 		
 	}
 	
