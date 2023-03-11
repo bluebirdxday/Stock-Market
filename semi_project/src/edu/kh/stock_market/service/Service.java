@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import edu.kh.stock_market.data.Information;
 import edu.kh.stock_market.dto.Stock;
 import edu.kh.stock_market.dto.User;
 import edu.kh.stock_market.dto.UserStock;
@@ -21,27 +22,99 @@ public class Service {
 	// 주식정보 초기화
 	public List<Stock> initStocks() {
 		List<Stock> stocks = new ArrayList<>();
-		stocks.add(new Stock("삼성전자", 1000));
-		stocks.add(new Stock("SK하이닉스", 2000));
-		stocks.add(new Stock("NAVER", 3000));
-		stocks.add(new Stock("현대차", 2500));
-		stocks.add(new Stock("삼성바이오로직스", 8000));
-		stocks.add(new Stock("LG화학", 15000));
-		stocks.add(new Stock("삼성SDI", 4000));
-		stocks.add(new Stock("셀트리온", 1500));
-		stocks.add(new Stock("카카오", 18000));
-		stocks.add(new Stock("기아차", 1000));
-		stocks.add(new Stock("POSCO", 2000));
-		stocks.add(new Stock("LG전자", 4000));
-		stocks.add(new Stock("SK이노베이션", 5000));
-		stocks.add(new Stock("삼성생명", 50000));
-		stocks.add(new Stock("현대모비스", 2500));
-		stocks.add(new Stock("LG생활건강", 3000));
-		stocks.add(new Stock("KB금융", 7000));
-		stocks.add(new Stock("한국전력", 6000));
-		stocks.add(new Stock("SK텔레콤", 4000));
+		stocks.add(new Stock("한미약품", 1000));
+		stocks.add(new Stock("삼성바이오로직스", 1500));
+		stocks.add(new Stock("대한항공", 1000));
+		stocks.add(new Stock("모두투어", 500));
+		stocks.add(new Stock("테슬라", 2500));
+		stocks.add(new Stock("MS soft", 1000));
+		stocks.add(new Stock("현대모비스", 1500));
+		stocks.add(new Stock("기아", 1000));
+		stocks.add(new Stock("SM", 500));
+		stocks.add(new Stock("하이브", 1500));
+		stocks.add(new Stock("DB하이텍", 500));
+		stocks.add(new Stock("SK 하이닉스", 2000));
+		stocks.add(new Stock("애플", 2000));
+		stocks.add(new Stock("삼성전자", 2500));
+		stocks.add(new Stock("KB 금융", 1000));
+		stocks.add(new Stock("미래에셋대우 증권", 500));
+		stocks.add(new Stock("현대건설", 500));
+		stocks.add(new Stock("LH", 1500));
+		stocks.add(new Stock("한화손해보험", 1000));
+		stocks.add(new Stock("DB손해보험", 2000));
+		stocks.add(new Stock("코스모화학", 2500));
+		stocks.add(new Stock("SK종합화학", 1500));
+		stocks.add(new Stock("CJ", 1000));
+		stocks.add(new Stock("오뚜기", 500));
+		stocks.add(new Stock("아모레퍼시픽", 500));
+		stocks.add(new Stock("LG 생활건강", 1000));
 		return stocks;
 	}
+	
+	
+	// 경매 정보 초기화
+		public List<Information> initInfos() {
+			List<Information> infos = new ArrayList<>(); 
+			infos.add(new Information("코로나 바이러스 발생",
+					new String[]{"한미약품","CJ","애플"},
+					new String[] {"대한항공","아모레퍼시픽", "KB 금융","SM"}));
+			infos.add(new Information("코로나 관련 규제 완화",
+					new String[]{"대한항공","아모레퍼시픽", "KB 금융","SM"},
+					new String[] {"한미약품","CJ","애플"}));
+			infos.add(new Information("코로나 백신 개발",
+					new String[]{"삼성바이오로직스","하이브","모두투어"},
+					new String[] {"삼성전자"}));
+			infos.add(new Information("조류 독감 발생",
+					new String[]{"종목없음"},
+					new String[] {"오뚜기"}));
+			infos.add(new Information("하이브리드 세금 혜택",
+					new String[]{"기아"},
+					new String[] {"종목없음"}));
+			infos.add(new Information("하이브리드 차량 화재",
+					new String[]{"DB손해보험"},
+					new String[] {"현대모비스","SK 하이닉스"}));
+			infos.add(new Information("자율주행 4단계 성공",
+					new String[]{"테슬라"},
+					new String[] {"종목없음"}));
+			infos.add(new Information("자율주행 주행 중 사고",
+					new String[]{"종목없음"},
+					new String[] {"테슬라"}));
+			infos.add(new Information("러시아, 우크라이나 전쟁 발발",
+					new String[]{"CJ","코스모화학"},
+					new String[] {"삼성바이오로직스", "대한항공", "테슬라", "기아", "SM", "DB하이텍", "삼성전자", "미래에셋대우 증권", "LH", "DB손해보험", "코스모화학", "오뚜기", "LG 생활건강"}));
+			infos.add(new Information("신도시 개발",
+					new String[]{"현대건설"},
+					new String[] {"종목없음"}));
+			infos.add(new Information("chat GPT 출시",
+					new String[]{"DB하이텍","애플"},
+					new String[] {"종목없음"}));
+			infos.add(new Information("메타버스 SNS 유행",
+					new String[]{"애플","하이브"},
+					new String[] {"종목없음"}));
+			infos.add(new Information("물가상승, 금리인상",
+					new String[]{"종목없음"},
+					new String[] {"한미약품", "모두투어", "테슬라", "기아", "SM", "DB하이텍", "애플", "미래에셋대우 증권", "LH", "DB손해보험", "SK종합화학", "오뚜기", "LG 생활건강"}));
+			infos.add(new Information("금리 인하",
+					new String[] {"한미약품", "모두투어", "테슬라", "기아", "SM", "DB하이텍", "애플", "미래에셋대우 증권", "LH", "DB손해보험", "SK종합화학", "오뚜기", "LG 생활건강"},
+					new String[] {"종목없음"}));
+			infos.add(new Information("아이돌 열애설",
+					new String[]{"종목없음"},
+					new String[] {"하이브"}));
+			infos.add(new Information("냉동식품 속 이물질",
+					new String[]{"종목없음"},
+					new String[] {"CJ"}));
+			infos.add(new Information("대한항공 아시아나 합병",
+					new String[]{"대한항공"},
+					new String[] {"종목없음"}));
+			infos.add(new Information("SM 매각",
+					new String[]{"SM"},
+					new String[] {"종목없음"}));
+			infos.add(new Information("중고폰 거래 키오스크 시장 진출",
+					new String[]{"애플","SK 하이닉스"},
+					new String[] {"종목없음"}));	
+			return infos;
+		}
+
 	
 
 	// 주식가격 업데이트
@@ -129,6 +202,7 @@ public class Service {
 		
 	}
 
+	
 	public UserStock findStock(User user, Stock stock) {
 		
 		List<UserStock> stockList = user.getUserStockList();
@@ -142,11 +216,29 @@ public class Service {
 				break;
 			}
 		}
-		
+	
 		return foundStock;
 		
 	}
-
+	
+	
+	public Stock findUserStock(User user, UserStock userStock, List<Stock> stocks) {
+		
+		
+		Stock foundStock = null;
+		
+		for(int i=0; i<stocks.size(); i++) {
+			
+			if(stocks.get(i).getStockName().equals(userStock.getStockName())) {
+				
+				foundStock = stocks.get(i);
+				break;
+			}
+		}
+		
+		return foundStock;
+				
+	}
 	
 	
 }

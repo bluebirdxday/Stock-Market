@@ -6,8 +6,10 @@ import java.util.InputMismatchException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Scanner;
 
+import edu.kh.stock_market.data.Information;
 import edu.kh.stock_market.dto.Stock;
 import edu.kh.stock_market.dto.User;
 import edu.kh.stock_market.dto.UserStock;
@@ -19,11 +21,14 @@ public class View {
 	private List<User> users;
 	private List<Stock> stocks;
 	private List<UserStock> userStocks;
+	private List<Information> infos; // 정보 배열
 
 	LocalDate now = LocalDate.now(); // 현재 날짜 구하기
 	int year = now.getYear();
 	int month = now.getMonthValue();
 	int day = now.getDayOfMonth();
+	
+	Random random = new Random();
 
 	public View() {
 		sc = new Scanner(System.in);
@@ -70,11 +75,7 @@ public class View {
 		
 		registerUserInfo();
 		stocks = service.initStocks();
-		
-		if((int)(Math.random()*2) == 0) {	
-			informationAuction();   // 랜덤으로 나타나게 하기
-		}
-		
+		infos = service.initInfos();     // 서비스에서 정보 생성 초기화
 		userInfoAndSelectStockOption();
 	}
 
@@ -97,7 +98,7 @@ public class View {
 
 	// 주식정보 출력
 	public void disStocks() {
-		System.out.println("\n---------- 주식 정보 ----------");
+		System.out.println("\n------------- 주식 정보 -------------");
 		for (int i = 0; i < stocks.size(); i++) {
 			System.out.printf("[%d]  ", i + 1);
 			System.out.println(stocks.get(i).getStockInfo());
@@ -147,152 +148,71 @@ public class View {
 
 	}
 
-	/** 정보 경매
-	 * 
-	 */
-	public void informationAuction() {
-		
-		final int MAX_BIDPRICE = 50000;  // 최대 금액
-		int bidPrice = 1000; // 입찰가
-		int quotePrice;  // 회원 제시가
-		User finalBidder = null;   // 최종 낙찰자
-		
-		Scanner sc = new Scanner(System.in);
-		
-		Iterator<User> userIterator;
-			//users 리스트 사용하기
-		
-		Map<User, Integer> bidPriceMap = new HashMap<>(); // 입찰가 Map(key : userName, value : bidPrice)
-		
-		System.out.println();
-		System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
-		System.out.printf("%d-%d-%d\n", year, month, day);
-		System.out.println("[정보 경매를 시작합니다]");
-		System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
-		
-		System.out.println();
-		
-		System.out.println("원하는 금액을 제시해주세요. (최대 금액 : 50,000원) ");
-		System.out.println("패스하시려면 (0)를 입력해주세요.");
-		
-		System.out.println();
-		System.out.println("현재 입찰가 : " + bidPrice + "원");
-		System.out.println();
-		
-		
-		for(int i=0; i<2; i++) {
-				
-			userIterator = users.iterator();  // 회원 리스트 순회를 위한 iterator
-			
-			while(userIterator.hasNext()) {
-				
-				User user = userIterator.next();				
-			
-				try {
-
-					while(true) {
-
-						System.out.print(user.getUserName() + " ▶ ");
-						quotePrice = sc.nextInt();
-						sc.nextLine();
-						
-						if(quotePrice==0) {
-							userIterator.remove();
-							break;
-						}
-						
-				     	else if(quotePrice<bidPrice) System.out.println("[X] 더 높은 금액을 제시해주세요 [X]"); // 회원 제시가 < 초기 입찰가
-						
-						else if(quotePrice>MAX_BIDPRICE) System.out.println("[X] 입찰 가능한 금액을 초과합니다 [X]");  // 회원 제시가 > 최대 금액
-
-						else {
-							bidPriceMap.put(user, quotePrice);
-							break;
-						}
-						
-					}
-							
-				
-				}catch(InputMismatchException e) {
-					
-					System.out.println("숫자만 입력 가능합니다. 다시 입력해주세요.");
-					System.out.println("[warning]" + e.getClass().getName() + " : " + e.getMessage());
-				
-				}catch(Exception e) {
-					
-					System.out.println("[warning]" + e.getClass().getName() + " : " + e.getMessage());
-				}
-			}
-		
-			if(bidPriceMap.isEmpty()) {
-				System.out.println("낙찰자가 존재하지 않습니다!");
-				System.out.println();
-				break;
-			}
-		
-			
-			finalBidder = service.auctionService(bidPriceMap);
-			System.out.println("---------------------------------");
-			
-		}
-
-		if(finalBidder!=null) {
-
-			System.out.println();
-			System.out.println("[ 최종 낙찰자 : " + finalBidder.getUserName() + "님 ]");
-			System.out.println(" 축하드립니다!");
-			System.out.println();
-			
-		}else {
-			
-			System.out.println("[낙찰자가 존재하지 않습니다!]");
-			System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
-		}
-		
-	}
-	
-
-	// 낙찰된 정보의 상세 내용
-	public void informationView() {
-
-	}
 
 	public void userInfoAndSelectStockOption() {
 		System.out.println();
 		System.out.println();
 		User user = null;
+		
 
 		for (int j = 1; j <= 10; j++) {
 
 			int amOrPm = j % 2;
-
+			
+			
+			if((int)(Math.random()*2) == 0)
+				informationAuction();
+			
+			
 			if (j != 1)
-				service.updatePrice(stocks);
+				service.updatePrice(stocks); 
 			
 			System.out.printf("\n\n %d년 %d월 %d일   %s", year, month, day, (amOrPm == 1 ? "오전" : "오후"));
 
-			for (int i = 0; i < users.size(); i++) {
-
 				
-//				service.setProperty(user, stocks);      
+			for (int i=0; i < users.size(); i++) {
 				
+			
 				disStocks();
 				user = users.get(i);
 				userStocks = user.getUserStockList();
+				
+				
+				int totalPrice = 0; // 사용자 모든 보유 주식 총 평가 가격
+				
+				for(Stock stock : stocks) { 
+					
+					// 주식 리스트를 돌면서 사용자 보유 주식 리스트와 일치하는 종목이 있는지 확인
+					UserStock userStock = service.findStock(user, stock);   // 일치하는 종목 찾음
+					if(userStock!=null) {
+						totalPrice += userStock.getStockCount() * stock.getStockPrice();
+					} // 주식 평가 가격  = 주식 평가 가격 + 사용자 보유 주식 개수 * 주식 종목 현재 가격
+				}
+				
+				
+				int difference = totalPrice - (user.getProperty() - user.getCashHoldings());  // 어제 자산과 오늘 자산 비교해서 등락률 계산 (근데 여기서 구현하면 하루기준 x, 오전/오후마다 바뀌게 됨)
+				
+				
+				user.updateProperty(totalPrice);  
+				
 
 				System.out.println();
 				System.out.println("-----------------------------------");
 				System.out.println("[ " + user.getUserName() + "님의 자산 ]");
 				System.out.println("총 평가 금액  : " + user.getProperty() + "원");
-				System.out.println("전일 대비 ");
+				System.out.println("현금 : " + user.getCashHoldings() + "원");
+				System.out.print("전일 대비 ");
+				if(difference>0) System.out.print(" + ");
+				System.out.println(difference + "원");
+				
 
 			
 				if (userStocks.size() != 0) {
 
 					System.out.println();
-					System.out.println("===========================================================");
-					System.out.println("종목명\t\t평단\t\t주식수\t\t현재금액\t\t수익률");
-					System.out.println("===========================================================");
+					System.out.println("================================================================================");
+					System.out.println("종목명\t\t평단\t\t보유수량\t\t매입금액\t\t평가금액\t\t평가손익\t\t수익률");
+					System.out.println("================================================================================");
 
 					
 					Iterator<UserStock> iterator = userStocks.iterator();
@@ -302,11 +222,13 @@ public class View {
 						
 						String stockName = userStock.getStockName();
 						if(!userStock.getStockName().equals("삼성바이오로직스")) stockName+="\t";
-						System.out.printf("%s\t%d\t\t%d\n", stockName, userStock.getAveragePrice(),userStock.getStockCount());
+						System.out.printf("%s\t%d\t\t%d\t\t%d\t\t%d\t\n", stockName, userStock.getAveragePrice(), userStock.getStockCount(), userStock.getAveragePrice()*userStock.getStockCount(),
+								
+								service.findUserStock(user, userStock, stocks).getStockPrice()*userStock.getStockCount());
 					}
 
 
-					System.out.println("===========================================================");
+					System.out.println("================================================================================");
 				}
 				
 
@@ -329,7 +251,12 @@ public class View {
 				            buyView(user);
 				            break;
 				        case 2:
-				            sellView(user);
+				        	if(!userStocks.isEmpty()) sellView(user);
+				        	else {
+				        		System.out.println("현재 보유하고 있는 주식이 없습니다! 다른 메뉴를 선택해주세요");
+				        		System.out.println("-----------------------------------");
+				        		continue;
+				        	}
 				            break;
 				        case 3:
 				            System.out.println("[ 아직 매수 / 매도가 가능합니다. 패스하시겠습니까? ]");
@@ -368,6 +295,123 @@ public class View {
 		}
 	}
 	
+	
+	
+	/** 정보 경매
+	 * 
+	 */
+	public void informationAuction() {
+		
+		final int MAX_BIDPRICE = 50000;  // 최대 금액
+		int bidPrice = 1000; // 입찰가
+		int quotePrice=0;  // 회원 제시가
+		User finalBidder = null;   // 최종 낙찰자
+		
+		Scanner sc = new Scanner(System.in);
+		
+		
+		Map<User, Integer> bidPriceMap = new HashMap<>(); // 입찰가 Map(key : userName, value : bidPrice)
+		
+		System.out.println();
+		System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
+		System.out.printf("%d-%d-%d\n", year, month, day);
+		System.out.println("[정보 경매를 시작합니다]");
+		System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
+		
+		System.out.println();
+		
+		System.out.println("원하는 금액을 제시해주세요. (최대 금액 : 50,000원) ");
+		System.out.println("패스하시려면 (0)를 입력해주세요.");
+		
+		System.out.println();
+		System.out.println("현재 입찰가 : " + bidPrice + "원");
+		System.out.println();
+		
+		
+		for(int i=0; i<2; i++) {
+				
+			for(int k=0; k<users.size(); k++) {
+				
+				try {
+
+					while(true) {
+
+						System.out.print(users.get(k).getUserName() + " ▶ ");
+						quotePrice = sc.nextInt();
+						sc.nextLine();
+						
+						if(quotePrice==0) {
+							break;
+						}
+						
+				     	else if(quotePrice<bidPrice) System.out.println("[X] 더 높은 금액을 제시해주세요 [X]"); // 회원 제시가 < 초기 입찰가
+						
+						else if(quotePrice>MAX_BIDPRICE) System.out.println("[X] 입찰 가능한 금액을 초과합니다 [X]");  // 회원 제시가 > 최대 금액
+
+						else {
+							bidPriceMap.put(users.get(k), quotePrice);
+							break;
+						}
+						
+					}
+							
+				
+				}catch(InputMismatchException e) {
+					
+					System.out.println("숫자만 입력 가능합니다. 다시 입력해주세요.");
+					System.out.println("[warning]" + e.getClass().getName() + " : " + e.getMessage());
+				
+				}catch(Exception e) {
+					
+					System.out.println("[warning]" + e.getClass().getName() + " : " + e.getMessage());
+				}
+				
+			}
+			
+			
+		
+			if(bidPriceMap.isEmpty()) {
+				System.out.println("낙찰자가 존재하지 않습니다!");
+				System.out.println();
+				break;
+				
+			}else {
+				
+				finalBidder = service.auctionService(bidPriceMap);
+				System.out.println("---------------------------------");
+			}
+		
+			
+		}
+
+		if(finalBidder!=null) {
+
+			System.out.println();
+			System.out.println("[ 최종 낙찰자 : " + finalBidder.getUserName() + "님 ]");
+			System.out.println(" 축하드립니다!");
+			System.out.println();
+			
+			InformaionView();
+			
+		}
+		
+	}
+	
+	
+
+	// 낙찰된 정보 상세 내역
+	public void InformaionView() {
+		System.out.println("★★★★★ 입찰 정보 상세 내역 ★★★★★\n");
+		int randomInfo = 0;
+
+		if(infos.size()!=0) {
+		randomInfo = random.nextInt(infos.size()); // 10 -> 0~9 범위
+		System.out.println(infos.get(randomInfo).toString());
+		infos.remove(randomInfo);}
+
+	}
+	
+	
 	public void buyView(User user) {
 		
 		int input=0;
@@ -379,7 +423,7 @@ public class View {
 		 * */
 		while(true) {
 			try {
-				System.out.print("매수 종목 번호 입력 : ");
+				System.out.print("매수 종목 번호 입력 ▶ ");
 				input = sc.nextInt();
 				// 구매할 종목 정보 대입
 				buyStock = stocks.get(input-1);
@@ -390,6 +434,7 @@ public class View {
 			}
 		}
 
+		
 		/* 예외상황.
 		 * 1. 숫자 외 입력
 		 * 2. input*buyStock.getStockPrice()가 user.getCashHoldings()를 초과하는 경우   
@@ -413,7 +458,11 @@ public class View {
 				sc.nextLine();
 			}
 		}
+		
 		user.buyStock(buyStock,input);
+		System.out.println();
+		System.out.printf("▷ %s %d주, 총 %d원에 매수 완료! ◁", buyStock.getStockName(), input, input*buyStock.getStockPrice());
+		System.out.println();
 	}
 
 	
@@ -422,13 +471,35 @@ public class View {
 	public void sellView(User user) {
 
 		int input=0;
-		boolean sellSuccess;
 		Stock sellStock;
 
 		/* 예외상황.
 		 * 1. 숫자 외 입력
 		 * 2. 매도 종목 번호 범위 초과 
 		 * */
+		
+//		if (userStocks.size() != 0) {
+//			
+//			System.out.println();
+//			System.out.println("===========================================================");
+//			System.out.println("번호\t\t종목명\t\t평단\t\t주식수\t\t현재금액\t\t수익률");
+//			System.out.println("===========================================================");
+//			
+//			
+//			for(int i=0; i<userStocks.size(); i++) {
+//				
+//				String stockName = userStocks.get(i).getStockName();
+//				if(!stockName.equals("삼성바이오로직스")) stockName+="\t";
+//				System.out.printf("[%d]\t%s\t%d\t\t%d\n", i+1, stockName, userStocks.get(i).getAveragePrice(),
+//						userStocks.get(i).getStockCount());
+//			}
+//			
+//			
+//			System.out.println("===========================================================");
+//		}
+	
+		
+		
 		while(true) {
 			
 			

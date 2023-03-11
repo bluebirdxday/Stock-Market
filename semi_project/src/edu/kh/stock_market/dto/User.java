@@ -53,10 +53,11 @@ public class User {
 
 	
 
-	// 총 자산 업데이트 (매수, 매도 시)
+	// 총 자산 업데이트 (주식 가격 변동 시)
 	public void updateProperty(int totalPrice) {
-		cashHoldings -= totalPrice; // 보유현금 = 보유 현금 - 매수 종목 가격 * 매수 주식 수
-		property = cashHoldings + totalPrice; // 총자산 = 보유현금 + 매수 종목 가격 * 매수 주식 수
+//		cashHoldings -= totalPrice; 
+//		property = cashHoldings + totalPrice; 
+		property = cashHoldings + totalPrice;  // 총 자산  = 현금 보유량 + 총 주식 평가 가격
 	}
 	
 	// 주식 구매
@@ -85,7 +86,7 @@ public class User {
 	}
 	
 	
-	
+
 	// sellStock 다시 작성하기
 	public void sellStock(Stock sellStock, int num, UserStock userStock) {
 		for(UserStock s : userStockList){
