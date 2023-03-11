@@ -53,10 +53,11 @@ public class User {
 
 	
 
-	// 총 자산 업데이트 (매수, 매도 시)
+	// 총 자산 업데이트 (주식 가격 변동 시)
 	public void updateProperty(int totalPrice) {
-		cashHoldings -= totalPrice; // 보유현금 = 보유 현금 - 매수 종목 가격 * 매수 주식 수
-		property = cashHoldings + totalPrice; // 총자산 = 보유현금 + 매수 종목 가격 * 매수 주식 수
+//		cashHoldings -= totalPrice; 
+//		property = cashHoldings + totalPrice; 
+		property = cashHoldings + totalPrice;  // 총 자산  = 현금 보유량 + 총 주식 평가 가격
 	}
 	
 	// 주식 구매
@@ -70,7 +71,7 @@ public class User {
 				s.setAveragePrice((
 								s.getAveragePrice()*s.getStockCount()
 								+buyStock.getStockPrice() * num)
-								/ s.getStockCount() + num);
+								/ (s.getStockCount() + num));
 				// 보유주식 수량에 수량 추가
 				s.setStockCount(s.getStockCount()+num);
 				// 현재 가격 * 구매 수량만큼 보유현금 차감
@@ -83,6 +84,43 @@ public class User {
 		// 현재 가격 * 구매 수량만큼 보유현금 차감
 		cashHoldings -= buyStock.getStockPrice() * num;
 	}
+	
+	
+
+	// sellStock 다시 작성하기
+	public void sellStock(Stock sellStock, int num, UserStock userStock) {
+		for(UserStock s : userStockList){
+			// 매도할 주식의 이름과 보유중식 주식의 이름 중 같은 것이 있는 지 비교
+			// 같은 것이 있다면, 처리해주고 메서드 종료.
+			if(s.getStockName().equals(sellStock.getStockName())){
+				
+				// 평단가 재설정.  (평단가*보유수량-현재가격*매도수량)/(보유수량-매도수량)
+				
+				if(s.getStockCount()-num!=0) {
+					
+					s.setAveragePrice((
+							s.getAveragePrice()*s.getStockCount()
+							-sellStock.getStockPrice() * num)
+							/ (s.getStockCount() - num));
+				}else {
+					
+					userStockList.remove(userStock);
+				}
+					
+							
+				// 보유주식 수량에 매도한 주식 수량 차감
+				s.setStockCount(s.getStockCount()-num);
+				// 현재 가격 * 매도 수량만큼 보유현금 증가
+				cashHoldings += sellStock.getStockPrice() * num;
+				return;
+			}
+		}
+	
+	}
+	
+	
+	
+
 
 	@Override
 	public boolean equals(Object obj) {
