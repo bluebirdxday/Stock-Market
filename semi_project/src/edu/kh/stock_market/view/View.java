@@ -210,25 +210,43 @@ public class View {
 				if (userStocks.size() != 0) {
 
 					System.out.println();
-					System.out.println("================================================================================");
+					System.out.println("==============================================================================================================");
 					System.out.println("종목명\t\t평단\t\t보유수량\t\t매입금액\t\t현재주가\t\t평가손익\t\t수익률");
-					System.out.println("================================================================================");
+					System.out.println("==============================================================================================================");
 
 					
 					Iterator<UserStock> iterator = userStocks.iterator();
+					int currentStockPrcie;  // 현재주가
+					int purchaseAmount;  // 매입금액
+					int gainsAndlosses; // 평가손익
 					
 					while(iterator.hasNext()) {
 						UserStock userStock = iterator.next();
 						
 						String stockName = userStock.getStockName();
+						
+						currentStockPrcie = service.findUserStock(user, userStock, stocks).getStockPrice()*userStock.getStockCount();  // 현재주가
+						purchaseAmount = userStock.getAveragePrice()*userStock.getStockCount(); // 매입금액
+						gainsAndlosses = currentStockPrcie-purchaseAmount; // 평가손익
+						
 						if(!userStock.getStockName().equals("삼성바이오로직스")) stockName+="\t";
-						System.out.printf("%s\t%d\t\t%d\t\t%d\t\t%d\t\n", stockName, userStock.getAveragePrice(), 
-								userStock.getStockCount(), userStock.getAveragePrice()*userStock.getStockCount(),
-								service.findUserStock(user, userStock, stocks).getStockPrice()*userStock.getStockCount());
+						System.out.printf("%s\t%d\t\t%d\t\t%d\t\t%d\t\t", stockName, userStock.getAveragePrice(),  // 종목명, 평단
+								userStock.getStockCount(), purchaseAmount, currentStockPrcie); // 보유수량, 매입금액, 현재 주가
+						
+						if(gainsAndlosses>0)
+							System.out.print("+");
+						System.out.print(gainsAndlosses + "\t\t");
+						// 평가 손익 = 현재주가 - 매입금액
+						
+						if((double)gainsAndlosses/userStock.getAveragePrice()>0.0)
+							System.out.print("+");
+						System.out.printf("%.2f%%\n" , (double)gainsAndlosses/userStock.getAveragePrice()); // 손익/평단(=투자원금)
+						
+						
 					}
 
+					System.out.println("==============================================================================================================");
 
-					System.out.println("================================================================================");
 				}
 				
 
