@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class User {
-	private int cash = 100000; // 시작시 현금
+public class User implements Comparable<User>{
+	
+	public static final int cash = 100000; // 시작시 현금
 	private String userName; // 유저 이름
 	private int cashHoldings; // 보유 현금
 	private List<UserStock> userStockList; // 보유 종목
@@ -53,10 +54,9 @@ public class User {
 
 	
 
-	// 총 자산 업데이트 (매수, 매도 시)
+	// 총 자산 업데이트 (주식 가격 변동 시)
 	public void updateProperty(int totalPrice) {
-		cashHoldings -= totalPrice; // 보유현금 = 보유 현금 - 매수 종목 가격 * 매수 주식 수
-		property = cashHoldings + totalPrice; // 총자산 = 보유현금 + 매수 종목 가격 * 매수 주식 수
+		property = cashHoldings + totalPrice;  // 총 자산  = 현금 보유량 + 총 주식 평가 가격
 	}
 	
 	// 주식 구매
@@ -85,7 +85,7 @@ public class User {
 	}
 	
 	
-	
+
 	// sellStock 다시 작성하기
 	public void sellStock(Stock sellStock, int num, UserStock userStock) {
 		for(UserStock s : userStockList){
@@ -117,8 +117,6 @@ public class User {
 	
 	}
 	
-	
-	
 
 
 	@Override
@@ -130,9 +128,16 @@ public class User {
 		return false;
 	}
 
+	
 	@Override
 	public int hashCode() {
 		return userName.hashCode();
+	}
+
+	
+	@Override
+	public int compareTo(User compareUser) {
+		return compareUser.property - this.property;
 	}
 
 }
