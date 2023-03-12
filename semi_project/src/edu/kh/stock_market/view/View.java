@@ -140,9 +140,8 @@ public class View {
 		System.out.println("[3] 초기 자본은 10만원입니다.");
 		System.out.println("[4] 주가는 상황에 따라 수시로 변동됩니다.");
 		System.out.println("[5] 턴 마다 매수, 매도, 패스를 선택 할 수 있습니다. 매수, 매도는 각 1번씩만 가능합니다 (총 2회)");
-		System.out.println("[6] 모든 종목은 10주로 한정되어 있습니다.");
-		System.out.println("[7] 정보 입찰이 격일로 진행됩니다.");
-		System.out.println("[8] 이벤트가 발생하는 날이 있으며 이에 따라 주가가 변동됩니다. ");
+		System.out.println("[6] 정보 입찰이 무작위로 진행됩니다.");
+		System.out.println("[7] 이벤트가 발생하는 날이 있으며 이에 따라 주가가 변동됩니다. ");
 		System.out.println();
 		System.out.println("========================================================================");
 
@@ -339,8 +338,10 @@ public class View {
 				    switch (input) {
 				    
 				        case 1:
-				            buyView(user);
-				            break;
+				            if(buyView(user)) 
+				            	continue;
+				            else
+				            	break;
 				        case 2:
 				        	if(!userStocks.isEmpty()) sellView(user);
 				        	else {
@@ -348,7 +349,7 @@ public class View {
 				        		System.out.println("-----------------------------------");
 				        		continue;
 				        	}
-				            break;
+				            continue;
 				        case 3:
 				            System.out.println("[ 아직 매수 / 매도가 가능합니다. 패스하시겠습니까? ]");
 				            System.out.println("1. 패스        2. 돌아가기");
@@ -524,7 +525,7 @@ public class View {
 	}
 	
 	
-	public void buyView(User user) {
+	public boolean buyView(User user) {
 		
 		int input=0;
 		Stock buyStock;
@@ -559,8 +560,10 @@ public class View {
 				input = sc.nextInt();
 				sc.nextLine();
 				if (input*buyStock.getStockPrice() > user.getCashHoldings()) {
+					System.out.println();
 					System.out.println("보유 현금이 부족합니다.");
-					continue;
+					System.out.println();
+					return true;
 				}
 				
 				break;
@@ -575,6 +578,7 @@ public class View {
 		System.out.println();
 		System.out.printf("▷ %s %d주, 총 %d원에 매수 완료! ◁", buyStock.getStockName(), input, input*buyStock.getStockPrice());
 		System.out.println();
+		return false;
 	}
 
 	
@@ -609,8 +613,9 @@ public class View {
 					
 					
 				}else {
-				
+					System.out.println();
 					System.out.println("현재 보유하고 있는 종목이 아니므로 매도 불가합니다");
+					System.out.println("-----------------------------------");
 					return;
 				}
 				
@@ -623,6 +628,7 @@ public class View {
 			
 		}
 	
+		System.out.println();
 		
 		
 		/* 예외상황.
@@ -646,6 +652,9 @@ public class View {
 			}
 		}
 		
+		System.out.println();
+		System.out.printf("▷ %s %d, 총 %d원에 매도 완료! ◁\n", sellStock.getStockName(), input, input*sellStock.getStockPrice());
+		
 		user.sellStock(sellStock, input, service.findStock(user, sellStock));
 		
 	}
@@ -667,6 +676,7 @@ public class View {
 			System.out.printf("\t[%d위] %s\t\t%d원\n", i+1, userList.get(i).getUserName(), userList.get(i).getProperty());
 		}
 		
+		System.out.println();
 		System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
 		
 	}
