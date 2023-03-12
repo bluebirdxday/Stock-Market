@@ -178,7 +178,6 @@ public class View {
 			if (j != 1)
 				service.updatePrice(stocks);
 
-
 			if (day == nextTime && !incDecList.isEmpty()) {
 				service.applyIncDecRateToStock(stocks, incDecList);
 			}
@@ -352,7 +351,7 @@ public class View {
 					break;
 				}
 
-			}
+			} //for문 
 
 			nextTime = day + 1;
 			dDay -= 1;
