@@ -2,7 +2,7 @@ package edu.kh.stock_market.view;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.InputMismatchException;
 import java.util.Iterator;
 import java.util.List;
@@ -23,14 +23,18 @@ public class View {
 	private List<Stock> stocks;
 	private List<UserStock> userStocks;
 	private List<Information> infos; // 정보 배열
-	List<Map<Stock, Integer>> incDecList = new ArrayList<Map<Stock, Integer>>(); // 정보 경매 상승,하락 종목들
+	private List<Map<Stock, Integer>> incDecList = new ArrayList<Map<Stock, Integer>>(); // 정보 경매 상승,하락 종목들
 
+	
 	LocalDate now = LocalDate.now(); // 현재 날짜 구하기
 	int year = now.getYear();
 	int month = now.getMonthValue();
 	int day = now.getDayOfMonth();
 	
-	int nextDay = 0;  // 정보 경매 등락률 다음 오전/오후 타임에 적용
+	int nextTime = 0;  // 정보 경매 등락률 다음 오전/오후 타임에 적용
+	
+	final int turn = 2;
+	
 	
 	Random random = new Random();
 
@@ -42,7 +46,11 @@ public class View {
 
 	// 메인화면
 	public void mainView() {
+		
 		int input;
+		boolean done = false;
+		
+		
 		while (true) {
 			try {
 				System.out.println("일개미 주식 거래소에 오신 것을 환영합니다!!");
@@ -55,7 +63,7 @@ public class View {
 				System.out.println();
 				switch (input) {
 				case 1:
-					enterStockExchange();
+					done = enterStockExchange();
 					break;
 				case 2:
 					ruleView();
@@ -71,16 +79,22 @@ public class View {
 				sc.nextLine();
 			}
 			System.out.println();
+			
+			if(done==true)
+				break;
 		}
 	}
 
 	// 거래소 입장
-	public void enterStockExchange() {
+	public boolean enterStockExchange() {
 		
 		registerUserInfo();
 		stocks = service.initStocks();
 		infos = service.initInfos();     // 서비스에서 정보 생성 초기화
 		userInfoAndSelectStockOption();
+		rankingView(users);
+		
+		return true;
 	}
 
 	// 사용자 등록
@@ -158,8 +172,10 @@ public class View {
 		User user = null;
 		User finalBidder=null;
 		
+		int dDay = turn-1;  // 최종 장마감 며칠 남았는지 환산
+		
 
-		for (int j = 1; j <= 20; j++) {
+		for (int j = 1; j <= turn; j++) {
 
 			int amOrPm = j % 2;
 			
@@ -180,14 +196,19 @@ public class View {
 				
 
 			
-			if(day==nextDay) {
+			if(day==nextTime) {
 				service.applyIncDecRateToStock(stocks, incDecList);
 			}
 			
 				
 			for (int i=0; i < users.size(); i++) {
 				
-				System.out.printf("\n\n %d년 %d월 %d일   %s", year, month, day, (amOrPm == 1 ? "오전" : "오후"));
+				System.out.printf("\n\n %d년 %d월 %d일   %s\t", year, month, day, (amOrPm == 1 ? "오전" : "오후"));
+				
+				if(dDay!=0)
+					System.out.printf("    D-%d\n", dDay);
+				else 
+					System.out.println("D-Day");
 			
 				disStocks();
 				user = users.get(i);
@@ -355,11 +376,11 @@ public class View {
 				
 			}
 			
-			nextDay = day + 1;
-			
+			nextTime = day + 1;
+			dDay -= 1;
 
 			if(amOrPm!=1) {
-	
+
 				if (service.calcDay(month, day)) {
 					day++;
 				} else {
@@ -456,31 +477,9 @@ public class View {
 			System.out.println("---------------------------------");
 			
 		
-//			if(bidPriceMap.isEmpty()) {
-//				System.out.println("낙찰자가 존재하지 않습니다!");
-//				System.out.println();
-//				break;
-//				
-//			}else {
-//				
-//				finalBidder = service.auctionService(bidPriceMap);
-//				System.out.println("---------------------------------");
-//			}
-		
 			
 		}
 
-//		if(finalBidder!=null) {
-//
-//			System.out.println();
-//			System.out.println("[ 최종 낙찰자 : " + finalBidder.getUserName() + "님 ]");
-//			System.out.println(" 축하드립니다!");
-//			System.out.println();
-//			
-//			finalBidder.setCashHoldings(finalBidder.getCashHoldings()-quotePrice);
-//			
-//		}
-		
 			
 		if(finalBidder!=null) {
 		
@@ -652,13 +651,24 @@ public class View {
 	}
 	
 
-	// 이벤트 발생
-	public void evernView() {
-	}
+	// 최종 순위
+	public void rankingView(List<User> userList) {
 
-	// 순위
-	public void rankingView() {
-
+		Collections.sort(userList);
+		
+		System.out.println();
+		System.out.println("★★★★★★★★★★★★★ 최종 순위 ★★★★★★★★★★★★★");
+		
+		System.out.println();
+		System.out.printf("\tWINNER : %s님 축하드립니다!!\n", userList.get(0).getUserName());
+		System.out.println();
+		
+		for(int i=0; i<userList.size(); i++) {
+			System.out.printf("\t[%d위] %s\t\t%d원\n", i+1, userList.get(i).getUserName(), userList.get(i).getProperty());
+		}
+		
+		System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
+		
 	}
 
 }

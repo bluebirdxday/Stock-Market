@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class User {
+public class User implements Comparable<User>{
 	
 	public static final int cash = 100000; // 시작시 현금
 	private String userName; // 유저 이름
@@ -117,8 +117,6 @@ public class User {
 	
 	}
 	
-	
-	
 
 
 	@Override
@@ -130,9 +128,16 @@ public class User {
 		return false;
 	}
 
+	
 	@Override
 	public int hashCode() {
 		return userName.hashCode();
+	}
+
+	
+	@Override
+	public int compareTo(User compareUser) {
+		return compareUser.property - this.property;
 	}
 
 }
