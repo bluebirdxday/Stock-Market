@@ -179,7 +179,7 @@ public class View {
 				service.updatePrice(stocks);
 
 
-			if (day == nextTime) {
+			if (day == nextTime && !incDecList.isEmpty()) {
 				service.applyIncDecRateToStock(stocks, incDecList);
 			}
 
