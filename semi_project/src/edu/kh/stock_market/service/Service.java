@@ -82,7 +82,7 @@ public class Service {
 					new String[] {"테슬라"}));
 			infos.add(new Information("러시아와 우크라이나 전쟁이 발발 될 기미가 보입니다.",
 					new String[]{"CJ","코스모화학"},
-					new String[] {"삼성바이오로직스", "대한항공", "테슬라", "기아", "SM", "DB하이텍", "삼성전자", "미래에셋대우 증권", "LH", "DB손해보험", "코스모화학", "오뚜기", "LG 생활건강"}));
+					new String[] {"삼성바이오로직스", "대한항공", "테슬라", "기아", "SM", "DB하이텍", "삼성전자", "미래에셋대우 증권", "LH", "DB손해보험", "오뚜기", "LG 생활건강"}));
 			infos.add(new Information("신도시 개발 사업을 추진할 예정입니다.",
 					new String[]{"현대건설"},
 					new String[] {"종목없음"}));
@@ -152,12 +152,13 @@ public class Service {
 						// HahsMap에 추가 key:Stock , value:newPrice
 						
 					}
-					
+				
 				}
 			}
 			
 		}
 		
+
 		
 		if(information.getDecrease()!=null) {  // 상승 종목이 존재한다면
 			
