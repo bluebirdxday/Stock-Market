@@ -160,7 +160,7 @@ public class Service {
 		
 
 		
-		if(information.getDecrease()!=null) {  // 상승 종목이 존재한다면
+		if(information.getDecrease()!=null) {  // 하락 종목이 존재한다면
 			
 			for(int i=0; i<decreaseList.length; i++) {
 				for(int j=0; j<stocks.size(); j++) {

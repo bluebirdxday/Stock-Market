@@ -318,14 +318,16 @@ public class View {
 						else
 							break;
 					case 2:
-						if (!userStocks.isEmpty())
+						if (!userStocks.isEmpty()) {
 							sellView(user);
+							break;
+						}
+						
 						else {
 							System.out.println("현재 보유하고 있는 주식이 없습니다! 다른 메뉴를 선택해주세요");
 							System.out.println("-----------------------------------");
 							continue;
 						}
-						continue;
 					case 3:
 						System.out.println("[ 아직 매수 / 매도가 가능합니다. 패스하시겠습니까? ]");
 						System.out.println("1. 패스        2. 돌아가기");
@@ -596,7 +598,7 @@ public class View {
 		if (finalBidder != null) {
 
 			// 현재 기술 스택으로 구현할 수 없는 부분으로 유저들의 양심에 맡겨 처리
-			System.out.printf(" %d원에 낙찰되었습니다. 축하드립니다!\n" , quotePrice);
+			System.out.printf(" %d원에 낙찰되었습니다. 축하드립니다!\n" , bidPrice);
 			System.out.println("잠시 후 정보가 공개됩니다.");
 			System.out.println(finalBidder.getUserName() + "님을 제외한 유저들은 눈을 감으세요!");
 			System.out.println(finalBidder.getUserName() + "님 혼자만 보셔야해요!!!!!");
