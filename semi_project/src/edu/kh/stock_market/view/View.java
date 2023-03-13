@@ -484,6 +484,7 @@ public class View {
 		for (int i = 0; i < pass.length; i++)
 			pass[i] = false; // pass에 기본값(false) 대입
 		int passCounter = 0; // 패스한 유저 수를 카운트
+		
 
 		System.out.println();
 		System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
@@ -495,7 +496,7 @@ public class View {
 		System.out.println("  - 0을 입력 시 경매를 포기하게 됩니다.");
 		System.out.println("  - 최대 금액은 " + MAX_BIDPRICE + "원이며, 그 이상 입력하실 경우 최대 금액으로 낙찰됩니다.\n");
 
-		while (true) {
+		while(true) {
 			System.out.println();
 			// 낙찰자가 정해졌다면, 반복문 종료
 			if (finalBidder != null)

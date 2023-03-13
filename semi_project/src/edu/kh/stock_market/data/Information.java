@@ -1,6 +1,5 @@
 package edu.kh.stock_market.data;
 
-import java.util.ArrayList;
 
 public class Information {
 
